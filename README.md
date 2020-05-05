@@ -1,4 +1,4 @@
-## Terraform AWS Template
+## terraform-aws-trafficinfo
 
 This template is a starting point for creating terraform modules.
 
