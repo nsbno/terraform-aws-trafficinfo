@@ -2,10 +2,10 @@
 
 ## Expected attributes
 
-**attribute_1**
+### attribute_1
 Short description.
 
-**attribute_2** (optional)
+### attribute_2 (optional)
 Short description.
 
 ## Example
