@@ -281,7 +281,7 @@ resource "aws_iam_role_policy" "dynamodb-table-policy" {
 
 # Lambda subscriptions
 resource "aws_cloudwatch_log_subscription_filter" "cloudwatch_access_log_subscription_lambda" {
-  count           = var.send_elasticcloud == "" ? 0 : 1
+  count           = var.enable_elasticcloud == false ? 0 : 1
   destination_arn = var.lambda_elasticcloud
   filter_pattern  = ""
   log_group_name  = "${var.name_prefix}-${var.service_name}"
