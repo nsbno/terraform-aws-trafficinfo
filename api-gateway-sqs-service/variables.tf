@@ -33,7 +33,7 @@ variable "user_pool_id" {
 
 variable "resource_server_scopes" {
   description = "Scopes to add to resource server."
-  type        = "map"
+  type        = map
   default = {
     scope = {
       "scope_name" : "access"
