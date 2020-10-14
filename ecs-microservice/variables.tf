@@ -127,19 +127,19 @@ variable "s3_read_buckets" {
   default = []
 }
 
-variable "send_elasticcloud" {
-  type    = string
-  default = ""
-}
-
 variable "lambda_elasticcloud" {
   description = "Lambda for sending logs to elastic cloud"
-  default= ""
+  default     = ""
+}
+
+variable "enable_elasticcloud" {
+  description = "set to true to enable elastic cloud for this microservice"
+  default     = false
 }
 
 variable "user_pool_id" {
   description = "The ID of the userpool to add resource server and app client for the microservice."
-  default = ""
+  default     = ""
 }
 
 variable "hosted_zone_name" {
@@ -155,16 +155,20 @@ variable "hosted_zone_name" {
 # authorized can use when requesting the service.
 variable "create_resource_server" {
   description = "Create resource server in Cognito for microservice."
-  default = 0
+  default     = 0
+}
+
+variable "cognito_resource_server_identifier_base" {
+  description = "The base identifier used by resource servers created by esc-microservice module."
 }
 
 variable "resource_server_scopes" {
   description = "Scopes to add to resource server."
-  type = "map"
+  type        = map
   default = {
     scope = {
-      "scope_name": "access"
-      "scope_description": "Default Microservice access scope."
+      "scope_name" : "access"
+      "scope_description" : "Default Microservice access scope."
     }
   }
 }
@@ -173,19 +177,19 @@ variable "resource_server_scopes" {
 # to other services.
 variable "create_app_client" {
   description = "Create application client in Cognito for microservice."
-  default = 0
+  default     = 0
 }
 
 # What scopes the client should have access to.
 variable "app_client_scopes" {
   description = "Scopes to add to microservice default app_client."
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "use_elasticache" {
   description = "Use elasticache for caching in microservice"
-  default = 0
+  default     = 0
 }
 
 variable "cache_node_type" {
@@ -201,4 +205,19 @@ variable "cache_automatic_failover_enabled" {
 variable "cache_number_cache_clusters" {
   description = "number of nodes in the cache cluster"
   default     = 1
+}
+
+variable "service_alarm_latency_treshold" {
+  description = "threshold for latency alarm in milliseconds"
+  default     = 2000
+}
+
+variable "service_alarm_cpu_evaluation_periods" {
+  description = "number of evaluation periods before triggering alarm"
+  default     = 5
+}
+
+variable "service_alarm_memory_treshold" {
+  description = "treshold for memory usage"
+  default     = 80
 }
