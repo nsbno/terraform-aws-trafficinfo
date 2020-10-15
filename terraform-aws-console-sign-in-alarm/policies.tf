@@ -22,3 +22,12 @@ data "aws_iam_policy_document" "sns_topic_policy" {
     resources = [aws_sns_topic.aws_logins[count.index].arn]
   }
 }
+data "aws_iam_policy_document" "lambda_put_metrics" {
+  statement {
+    effect  = "Allow"
+    actions = ["cloudwatch:PutMetricData"]
+    resources = [
+            "*",
+        ]
+  }
+}

@@ -80,7 +80,16 @@ resource "aws_iam_role_policy_attachment" "cloudwatch-write" {
     role = aws_iam_role.iam_for_lambda.name
     policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
+resource "aws_iam_policy" "put_metrics" {
+  name        = "CloudWatch_Put_Metrics"
+  description = "Put Metrics"
 
+  policy = data.aws_iam_policy_document.lambda_put_metrics.json
+}
+resource "aws_iam_role_policy_attachment" "put-metrics" {
+    role = aws_iam_role.iam_for_lambda.name
+    policy_arn = aws_iam_policy.put_metrics.arn
+} 
 resource "aws_cloudwatch_event_target" "slack" {
   rule      = aws_cloudwatch_event_rule.console.name
   target_id = "SendToSlackChannel"
