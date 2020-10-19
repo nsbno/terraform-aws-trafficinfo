@@ -21,53 +21,6 @@ resource "aws_api_gateway_base_path_mapping" "gateway_base_path_mapping" {
   domain_name = var.domain_name
   base_path   = var.base_path
 }
-  
-resource "aws_iam_role" "api_gateway_sqs_role" {
-  name = "${var.name_prefix}-${var.service_name}-apigateway-sqs"
-
-  assume_role_policy = data.aws_iam_policy_document.gateway_assume_role.json
-}
-
-data "aws_iam_policy_document" "gateway_assume_role" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    principals {
-      identifiers = ["apigateway.amazonaws.com"]
-      type        = "Service"
-    }
-  }
-}
-
-data "aws_iam_policy_document" "api_gateway_sqs_policy" {
-  statement {
-    effect  = "Allow"
-    actions = [
-      "sqs:SendMessage"
-    ]
-    resources = [var.sqs_integration_arn]
-  }
-
-  statement {
-    effect  = "Allow"
-    actions = [
-      "sqs:ListQueues"
-    ]
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_policy" "api_policy" {
-  name = "${var.name_prefix}-${var.service_name}-apigateway-sqs-policy"
-
-  policy = data.aws_iam_policy_document.api_gateway_sqs_policy.json
-}
-
-
-resource "aws_iam_role_policy_attachment" "api_exec_role" {
-  role       =  aws_iam_role.api_gateway_sqs_role.name
-  policy_arn =  aws_iam_policy.api_policy.arn
-}
 
 # create a resource server for the microservice
 resource "aws_cognito_resource_server" "resource_server" {
@@ -88,4 +41,11 @@ resource "aws_cognito_resource_server" "resource_server" {
   }
 
   user_pool_id = var.user_pool_id
+}
+
+module "api-gateway-sqs-roles-duty-change" {
+  source       = "../api-gateway-sqs-roles"
+  name_prefix  = var.name_prefix
+  service_name = var.service_name
+  sqs_integration_arn = var.sqs_integration_arn
 }
