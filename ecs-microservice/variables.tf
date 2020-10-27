@@ -221,3 +221,9 @@ variable "service_alarm_memory_treshold" {
   description = "treshold for memory usage"
   default     = 80
 }
+
+variable "enable_metrics" {
+  description = "set to true to enable CloudWatch Metrics this microservice"
+  default     = true
+  type        = bool
+}

@@ -288,3 +288,12 @@ resource "aws_cloudwatch_log_subscription_filter" "cloudwatch_access_log_subscri
   name            = "ElasticsearchStream-${var.name_prefix}"
   distribution    = "ByLogStream"
 }
+
+# Enable or disable metrics in micronaut.
+# By default metrics is enabled.
+resource "aws_ssm_parameter" "ssm_metrics_http_client_path" {
+  name      = "/${var.name_prefix}/config/${var.service_name}/micronaut.metrics.enabled"
+  type      = bool
+  value     = var.enable_metrics
+  overwrite = true
+}
