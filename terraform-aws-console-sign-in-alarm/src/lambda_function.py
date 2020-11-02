@@ -28,6 +28,11 @@ def lambda_handler(event, context):
     mfa = str(event["detail"]["additionalEventData"]["MFAUsed"])
     usr = principalId.split(":")
     USER = usr[1]
+    iam = boto3.client('iam')
+    # List account alias
+    aliaslist = iam.list_account_aliases()
+    print(aliaslist['AccountAliases'][0])
+    alias = aliaslist['AccountAliases'][0]
     cloudwatch = boto3.client('cloudwatch')
     if 'AdministratorRole' in userarn:
         print ('User signed in with AdminRole!')
@@ -48,7 +53,7 @@ def lambda_handler(event, context):
           Namespace='CUSTOME/SignIn'
         )
         slack_message = {
-            'text': "Arn: %s \n PrincipleId: %s \n EventType: %s \n SourceIP: %s \n MFAUsed: %s" % (userarn, principalId, eventtype, sourceIP, mfa)
+            'text': "AccountAlias: %s \n PrincipleId: %s \n Arn: %s \n EventType: %s \n SourceIP: %s \n MFAUsed: %s" % (alias, principalId, userarn, eventtype, sourceIP, mfa)
         }
         req = Request(HOOK_URL, json.dumps(slack_message).encode('utf-8'))
         try:

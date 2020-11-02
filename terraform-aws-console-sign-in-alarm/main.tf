@@ -90,6 +90,16 @@ resource "aws_iam_role_policy_attachment" "put-metrics" {
     role = aws_iam_role.iam_for_lambda.name
     policy_arn = aws_iam_policy.put_metrics.arn
 } 
+resource "aws_iam_policy" "list_alias" {
+  name        = "List_Account_Alias"
+  description = "Listing account's aliases"
+
+  policy = data.aws_iam_policy_document.lambda_list_alias.json
+}
+resource "aws_iam_role_policy_attachment" "list_alias" {
+    role = aws_iam_role.iam_for_lambda.name
+    policy_arn = aws_iam_policy.list_alias.arn
+}
 resource "aws_cloudwatch_event_target" "slack" {
   rule      = aws_cloudwatch_event_rule.console.name
   target_id = "SendToSlackChannel"

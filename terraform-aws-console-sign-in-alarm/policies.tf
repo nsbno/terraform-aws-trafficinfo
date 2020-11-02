@@ -31,3 +31,12 @@ data "aws_iam_policy_document" "lambda_put_metrics" {
         ]
   }
 }
+data "aws_iam_policy_document" "lambda_list_alias" {
+  statement {
+    effect  = "Allow"
+    actions = ["iam:ListAccountAliases"]
+    resources = [
+            "*",
+        ]
+  }
+}
