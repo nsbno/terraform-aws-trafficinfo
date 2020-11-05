@@ -46,9 +46,12 @@ resource "aws_lb_listener_rule" "ecs_fargate_microservice_lb_listener" {
   }
 
   condition {
-    field = "path-pattern"
-    values = [
-    "/${var.base_path}/*"]
+    path_pattern {
+      values = ["/${var.base_path}/*"]
+    }
+    # field = "path-pattern"
+    # values = [
+    # "/${var.base_path}/*"]
   }
 }
 
