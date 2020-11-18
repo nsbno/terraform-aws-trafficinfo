@@ -24,6 +24,7 @@ def lambda_handler(event, context):
     userarn = str(event["detail"]["userIdentity"]["arn"])
     principalId = str(event["detail"]["userIdentity"]["principalId"])
     eventtype = str(event["detail"]["eventType"])
+    eventtime = str(event["detail"]["eventTime"])
     sourceIP = str(event["detail"]["sourceIPAddress"])
     mfa = str(event["detail"]["additionalEventData"]["MFAUsed"])
     usr = principalId.split(":")
@@ -53,7 +54,7 @@ def lambda_handler(event, context):
           Namespace='CUSTOME/SignIn'
         )
         slack_message = {
-            'text': "*AWSLogin via Console* :face_with_monocle: \n - AccountAlias: %s \n - PrincipleId: %s \n - RoleArn: %s \n - SourceIPAddress: %s \n - EventType: %s \n - MFAUsed: %s" % (alias, principalId, userarn, sourceIP, eventtype, mfa)
+            'text': "*AWSLogin via Console* :face_with_monocle: \n - AccountAlias: %s \n - PrincipleId: %s \n - RoleArn: %s \n - SourceIPAddress: %s \n - EventType: %s \n - EventTime: %s \n - MFAUsed: %s" % (alias, principalId, userarn, sourceIP, eventtype, eventtime, mfa)
         }
         req = Request(HOOK_URL, json.dumps(slack_message).encode('utf-8'))
         try:
