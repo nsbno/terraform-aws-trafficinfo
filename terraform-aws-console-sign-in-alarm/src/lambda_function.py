@@ -21,6 +21,7 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event, context):
     logger.info("Event: " + str(event))
     msg = str(event["detail"])
+    accountid = str(event["detail"]["userIdentity"]["accountId"])
     userarn = str(event["detail"]["userIdentity"]["arn"])
     principalId = str(event["detail"]["userIdentity"]["principalId"])
     eventtype = str(event["detail"]["eventType"])
@@ -54,7 +55,7 @@ def lambda_handler(event, context):
           Namespace='CUSTOME/SignIn'
         )
         slack_message = {
-            'text': "*AWSLogin via Console* :face_with_monocle: \n - AccountAlias: %s \n - PrincipleId: %s \n - RoleArn: %s \n - SourceIPAddress: %s \n - EventType: %s \n - EventTime: %s \n - MFAUsed: %s" % (alias, principalId, userarn, sourceIP, eventtype, eventtime, mfa)
+            'text': "*AWSLogin via Console* :face_with_monocle: \n - AccountAlias: %s \n - AccountId: %s \n - UserName: %s \n - RoleArn: %s \n - SourceIPAddress: %s \n - EventType: %s \n - EventTime: %s \n - MFAUsed: %s" % (alias, accountid, USER, userarn, sourceIP, eventtype, eventtime, mfa)
         }
         req = Request(HOOK_URL, json.dumps(slack_message).encode('utf-8'))
         try:
