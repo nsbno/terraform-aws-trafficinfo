@@ -19,6 +19,6 @@ data "aws_iam_policy_document" "ssm-policies" {
         }
  statement {
             actions = ["kms:Decrypt",]
-            resources = ["arn:aws:kms:eu-west-1:${local.current_account_id}:key/alias/slack-webhook-url",]
+            resources = ["arn:aws:kms:eu-west-1:${local.current_account_id}:key/slack-webhook-url",]
         }     
 }
