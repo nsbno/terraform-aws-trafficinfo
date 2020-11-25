@@ -12,6 +12,7 @@ resource "aws_ssm_parameter" "slack_webhook" {
   tags        = var.tags
 }
 resource "aws_iam_role" "iam_for_assuming_role" {
+  name               = "Master_Assume_Role"
   assume_role_policy = data.aws_iam_policy_document.crossaccount-assume-role-policy.json
   description        = "Allow master account-lambda role to get a parameter"
   tags               = var.tags
