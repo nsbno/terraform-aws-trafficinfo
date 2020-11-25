@@ -22,7 +22,7 @@ resource "aws_iam_policy" "get_ssm_parameter" {
 
   policy = data.aws_iam_policy_document.ssm-policies.json
 }
-resource "aws_iam_role_policy_attachment" "put-metrics" {
+resource "aws_iam_role_policy_attachment" "get_parameter" {
     role = aws_iam_role.iam_for_assuming_role.name
     policy_arn = aws_iam_policy.get_ssm_parameter.arn
 }
