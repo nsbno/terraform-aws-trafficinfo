@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "crossaccount-assume-role-policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::276520083766:role/LambdaExe-CliLogin-Notification"]
+      identifiers = ["arn:aws:iam::${var.execution_account}:role/LambdaExe-CliLogin-Notification"]
     }
   }
 }
