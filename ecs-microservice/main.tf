@@ -285,6 +285,7 @@ data "aws_iam_policy_document" "dynamodb-table-permissions" {
       "dynamodb:PutItem",
       "dynamodb:GetItem",
       "dynamodb:Query",
+      "dynamodb:Scan",
       "dynamodb:BatchWriteItem",
       "dynamodb:BatchGetItem",
       "dynamodb:DeleteItem",
