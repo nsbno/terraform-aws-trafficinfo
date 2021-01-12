@@ -142,9 +142,16 @@ variable "enable_elasticcloud" {
   default     = false
 }
 
+# Our own Trafficinfo Cognito instance.
 variable "user_pool_id" {
   description = "The ID of the userpool to add resource server and app client for the microservice."
-  default     = ""
+}
+
+# If central_user_pool_id is set, also create the same resource server
+# and same app client in the central Cognito Instance.
+variable "central_user_pool_id" {
+  description = "The ID of the userpool in the Central Cognito instance,to add resource server and app client for the microservice."
+  default = ""
 }
 
 variable "hosted_zone_name" {
