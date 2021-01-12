@@ -101,7 +101,7 @@ resource "aws_cognito_resource_server" "central_resource_server" {
     }
   }
 
-  user_pool_id = var.user_pool_id
+  user_pool_id = var.central_user_pool_id
 }
 
 # create a default application client for the microservice, so
@@ -109,9 +109,9 @@ resource "aws_cognito_resource_server" "central_resource_server" {
 # an access_token to use for calling other microservices.
 resource "aws_cognito_user_pool_client" "central_app_client" {
   count                                = length(var.central_user_pool_id)>0 && var.create_app_client > 0 ? 1 : 0
-  depends_on                           = [aws_cognito_resource_server.resource_server]
+  depends_on                           = [aws_cognito_resource_server.central_resource_server]
   name                                 = "${var.name_prefix}-${var.service_name}-client"
-  user_pool_id                         = var.user_pool_id
+  user_pool_id                         = var.central_user_pool_id
   generate_secret                      = true
   explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
   allowed_oauth_flows                  = ["client_credentials"]
