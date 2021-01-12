@@ -85,7 +85,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 ###########################################################
 # create a resource server for the microservice
 resource "aws_cognito_resource_server" "central_resource_server" {
-  count      = var.central_user_pool_id && var.create_resource_server > 0 ? 1 : 0
+  count      = length(var.central_user_pool_id)>0 && var.create_resource_server > 0 ? 1 : 0
   identifier = "${var.cognito_resource_server_identifier_base}/${var.base_path}"
   name       = "${var.name_prefix}-${var.service_name}"
 
@@ -108,7 +108,7 @@ resource "aws_cognito_resource_server" "central_resource_server" {
 # that the microservice can authenticate to cognito and request
 # an access_token to use for calling other microservices.
 resource "aws_cognito_user_pool_client" "central_app_client" {
-  count                                = var.central_user_pool_id && var.create_app_client > 0 ? 1 : 0
+  count                                = length(var.central_user_pool_id)>0 && var.create_app_client > 0 ? 1 : 0
   depends_on                           = [aws_cognito_resource_server.resource_server]
   name                                 = "${var.name_prefix}-${var.service_name}-client"
   user_pool_id                         = var.user_pool_id
