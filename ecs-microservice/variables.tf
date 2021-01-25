@@ -1,3 +1,8 @@
+variable "environment" {
+  description = "Name of the environment, Ex. dev, test ,stage, prod."
+  type        = string
+}
+
 variable "desired_count" {
   description = "Desired number of container instances of the service to run."
   default     = 1
