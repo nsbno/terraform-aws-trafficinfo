@@ -83,3 +83,6 @@ resource "aws_ssm_parameter" "cognito-url" {
 # We need to Create all the oauth configuration in the central
 # cognito and migrate our services over to
 ###########################################################
+
+# TODO add code to put a json file in S3 to configure Central Cognito when
+# Erlend is done.
