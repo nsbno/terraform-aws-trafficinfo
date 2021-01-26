@@ -78,10 +78,11 @@ resource "aws_ssm_parameter" "cognito-url" {
 
 ###########################################################
 # Create Resource Server and App Client in the central Cognito
-# instance if userpool id is provided as parameter.
 #
 # We need to Create all the oauth configuration in the central
-# cognito and migrate our services over to
+# cognito and migrate our services over to use it so that
+# the OAuth tokens is valid between different team accounts,
+# For example traffic-control, traffic-gui and info.
 ###########################################################
 
 # TODO add code to put a json file in S3 to configure Central Cognito when
