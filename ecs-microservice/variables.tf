@@ -150,6 +150,7 @@ variable "enable_elasticcloud" {
 # Our own Trafficinfo Cognito instance.
 variable "user_pool_id" {
   description = "The ID of the userpool to add resource server and app client for the microservice."
+  default     = ""
 }
 
 variable "hosted_zone_name" {
