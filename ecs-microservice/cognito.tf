@@ -74,3 +74,16 @@ resource "aws_ssm_parameter" "cognito-url" {
   type  = "String"
   value = "https://auth.${var.hosted_zone_name}"
 }
+
+
+###########################################################
+# Create Resource Server and App Client in the central Cognito
+#
+# We need to Create all the oauth configuration in the central
+# cognito and migrate our services over to use it so that
+# the OAuth tokens is valid between different team accounts,
+# For example traffic-control, traffic-gui and info.
+###########################################################
+
+# TODO add code to put a json file in S3 to configure Central Cognito when
+# Erlend is done.

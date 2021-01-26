@@ -1,3 +1,8 @@
+variable "environment" {
+  description = "Name of the environment, Ex. dev, test ,stage, prod."
+  type        = string
+}
+
 variable "desired_count" {
   description = "Desired number of container instances of the service to run."
   default     = 1
@@ -142,6 +147,7 @@ variable "enable_elasticcloud" {
   default     = false
 }
 
+# Our own Trafficinfo Cognito instance.
 variable "user_pool_id" {
   description = "The ID of the userpool to add resource server and app client for the microservice."
   default     = ""
