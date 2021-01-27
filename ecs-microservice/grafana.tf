@@ -17,13 +17,13 @@ resource "grafana_folder" "collection" {
 resource "grafana_dashboard" "dashboard_in_folder" {
   count = var.grafana_create_dashboard == true ? 1 : 0
   folder = var.grafana_use_existing_folder>0 ? var.grafana_use_existing_folder : grafana_folder.collection[0].id
-  config_json = templatefile(var.grafana_template_file, {
+  config_json = templatefile(length(var.grafana_template_file)>0 ? var.grafana_template_file : "${path.module}/default-dashboard.tpl", {
     "name": title("${var.service_name} ${var.environment}")
     "environment": var.environment
     "name_prefix": var.name_prefix
     "application": var.service_name
     "service_name": var.service_name
     "region": data.aws_region.current
-    "uuid": filemd5("${path.module}/dashboard.tpl")
+    "uuid": filemd5(length(var.grafana_template_file)>0 ? var.grafana_template_file : "${path.module}/default-dashboard.tpl")
   })
 }

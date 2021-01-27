@@ -250,9 +250,9 @@ variable "grafana_use_existing_folder" {
 }
 
 variable "grafana_template_file" {
-  description = "(Optional) Path to template for dashboard, override to provide a custom dashboard template."
+  description = "(Optional) Path to template for dashboard to provide a custom dashboard template."
   type        = string
-  default     = "../static/grafana/dashboard.tpl"
+  default     = ""
 }
 
 variable "grafana_create_dashboard" {
