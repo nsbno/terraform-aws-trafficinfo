@@ -35,7 +35,7 @@
   "links": [],
   "panels": [
         {
-          "content": "\n# Default Dashboard for ${name_prefix}-${service_name}\n\nFor markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n\n\n\n",
+          "content": "\n# Dashboard for ${name_prefix}-${service_name}\n\nFor markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n\n\n\n",
           "fieldConfig": {
             "defaults": {
               "custom": {}
