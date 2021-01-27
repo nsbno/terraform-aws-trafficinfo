@@ -23,7 +23,7 @@ resource "grafana_dashboard" "dashboard_in_folder" {
     "name_prefix": var.name_prefix
     "application": var.service_name
     "service_name": var.service_name
-    "region": data.aws_region.current
+    "region": "eu-west-1"
     "uuid": filemd5(length(var.grafana_template_file)>0 ? var.grafana_template_file : "${path.module}/default-dashboard.tpl")
   })
 }
