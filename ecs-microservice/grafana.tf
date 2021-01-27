@@ -1,3 +1,12 @@
+###########################################################
+# Configure Grafana dashboard for microservice.
+#
+# Create a dashboard using the different values provided
+# as parameters to the mciroservice module to give a single
+# glass pane to watch the different components used by the
+# service.
+###########################################################
+
 data "aws_region" "current" {}
 
 resource "grafana_folder" "collection" {
