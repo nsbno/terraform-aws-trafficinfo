@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 resource "grafana_folder" "collection" {
   count = (var.grafana_use_existing_folder==-1 && var.grafana_create_dashboard == true) ? 1 : 0
   title = length(var.grafana_folder_name)>0 ? var.grafana_folder_name : title("${var.name_prefix} > ${var.service_name}")
@@ -12,6 +14,7 @@ resource "grafana_dashboard" "dashboard_in_folder" {
     "name_prefix": var.name_prefix
     "application": var.service_name
     "service_name": var.service_name
+    "region": data.aws_region.current
     "uuid": filemd5("${path.module}/dashboard.tpl")
   })
 }

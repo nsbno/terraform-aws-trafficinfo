@@ -21,7 +21,7 @@
         "name": "Alarms",
         "namespace": "AWS/ECS",
         "period": "",
-        "region": "eu-west-1",
+        "region": "${region}",
         "statistics": [
           "Average"
         ]
@@ -134,7 +134,7 @@
 				"namespace": "AWS/ECS",
 				"period": "",
 				"refId": "A",
-				"region": "eu-west-1",
+				"region": "${region}",
 				"statistics": [
 					"Average"
 				]
@@ -222,7 +222,7 @@
               "namespace": "AWS/ECS",
               "period": "",
               "refId": "A",
-              "region": "eu-west-1",
+              "region": "${region}",
               "statistics": [
                 "Average"
               ]
