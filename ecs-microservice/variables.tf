@@ -260,3 +260,10 @@ variable "grafana_create_dashboard" {
   type        = bool
   default     = false
 }
+
+# configure delegated cognito deployment
+variabe "cognito_slack_webhook" {
+  description = "(Optional) If set upload config for slack webhook to delegated cognito via S3 bucket."
+  type        = string
+  default     = ""
+}

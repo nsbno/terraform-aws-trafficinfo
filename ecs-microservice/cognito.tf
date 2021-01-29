@@ -98,7 +98,7 @@ resource "aws_s3_bucket_object" "slack" {
   bucket = "vydev-delegated-cognito-staging"
   key    = "${var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
   acl    = "bucket-owner-full-control"
-  content = "xxx"
+  content = var.cognito_slack_webhook
 }
 
 # upload delegated cognito config to S3 bucket.
