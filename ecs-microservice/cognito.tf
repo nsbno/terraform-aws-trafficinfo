@@ -95,9 +95,9 @@ resource "aws_ssm_parameter" "cognito-url" {
 resource "aws_s3_bucket_object" "slack" {
   count      = length(var.cognito_slack_webhook) > 0 ? 1 : 0
 
-  bucket = "vydev-delegated-cognito-staging"
-  key    = "${var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
-  acl    = "bucket-owner-full-control"
+  bucket  = var.cognito_bucket
+  key     = "${var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
+  acl     = "bucket-owner-full-control"
   content = var.cognito_slack_webhook
 }
 
@@ -106,7 +106,7 @@ resource "aws_s3_bucket_object" "slack" {
 resource "aws_s3_bucket_object" "config" {
   count      = var.create_resource_server > 0 ? 1 : 0
 
-  bucket = "vydev-delegated-cognito-staging"
+  bucket = var.cognito_bucket
   key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
