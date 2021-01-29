@@ -110,6 +110,7 @@ resource "aws_s3_bucket_object" "config" {
   key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
+  ## TODO maybe pull this out to a template to do more advanced conditional logic.
   content = jsonencode({
     # Configure resource server.
     resource_server = {
