@@ -12,7 +12,6 @@
 data "aws_caller_identity" "current_account" {}
 
 locals {
-  cognito_test_account = "231176028624"
   current_account_id = data.aws_caller_identity.current_account.account_id
 }
 
