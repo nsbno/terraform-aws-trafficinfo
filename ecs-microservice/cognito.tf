@@ -106,7 +106,7 @@ resource "aws_s3_bucket_object" "config" {
   count      = var.create_resource_server > 0 ? 1 : 0
 
   bucket = var.cognito_bucket
-  key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
+  key    = "${var.cognito_env ? var.cognito_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
   ## TODO maybe pull this out to a template to do more advanced conditional logic.

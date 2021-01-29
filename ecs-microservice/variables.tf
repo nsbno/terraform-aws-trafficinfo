@@ -276,3 +276,9 @@ variable "cognito_bucket" {
   type        = string
   default     = "vydev-delegated-cognito-staging"
 }
+
+variable "cognito_env" {
+  description = "(Optional) Override which env to upload to for delegated cognito, default is the \"envirnment\"-variable."
+  type        = string
+  default     = ""
+}
