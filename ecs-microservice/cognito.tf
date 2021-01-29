@@ -9,6 +9,12 @@
 # - create application properties to for micronaut to request tokens. (optional)
 #
 ###########################################################
+data "aws_caller_identity" "current_account" {}
+
+locals {
+  cognito_test_account = "231176028624"
+  current_account_id = data.aws_caller_identity.current_account.account_id
+}
 
 # create a resource server for the microservice
 resource "aws_cognito_resource_server" "resource_server" {
@@ -85,5 +91,47 @@ resource "aws_ssm_parameter" "cognito-url" {
 # For example traffic-control, traffic-gui and info.
 ###########################################################
 
-# TODO add code to put a json file in S3 to configure Central Cognito when
-# Erlend is done.
+# Set slack webhook url for notification for delegated cognito config.
+resource "aws_s3_bucket_object" "slack" {
+  count      = var.create_resource_server > 0 ? 1 : 0
+
+  bucket = "vydev-delegated-cognito-staging"
+  key    = "${var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
+  acl    = "bucket-owner-full-control"
+  content = "https://hooks.slack.com/services/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"
+}
+
+# upload delegated cognito config to S3 bucket.
+# this will trigger the delegated cognito terraform pipeline and and apply the config.
+resource "aws_s3_bucket_object" "config" {
+  count      = var.create_resource_server > 0 ? 1 : 0
+
+  bucket = "vydev-delegated-cognito-staging"
+  key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
+  acl    = "bucket-owner-full-control"
+
+  content = jsonencode({
+    # Configure resource server.
+    resource_server = {
+      name_prefix = "${var.name_prefix}-${var.service_name}"
+      identifier  = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
+
+      scopes = [for key, value in var.resource_server_scopes : {
+        scope_name        = value.scope_name
+        scope_description = value.scope_description
+      }]
+    }
+
+    # Configure a user pool client
+    # TODO. this should be conditionally toggled.
+    user_pool_client = {
+      name_prefix     = "${var.name_prefix}-${var.service_name}"
+      generate_secret = true
+
+      allowed_oauth_flows                  = ["client_credentials"]
+      allowed_oauth_scopes                 = var.app_client_scopes
+      allowed_oauth_flows_user_pool_client = true
+    }
+  })
+  content_type = "application/json"
+}
