@@ -132,18 +132,26 @@ resource "aws_api_gateway_rest_api" "api_gateway_microservice_rest_api" {
 
 resource "aws_api_gateway_deployment" "api_gateway_microservice_rest_api_deployment_v1" {
   rest_api_id = aws_api_gateway_rest_api.api_gateway_microservice_rest_api.id
-  stage_name  = "v1"
-  variables = {
-    hash = sha256(var.schema)
-  }
   lifecycle {
     create_before_destroy = true
   }
 }
 
+resource "aws_api_gateway_stage" "api_gateway_microservice_stage_v1" {
+  rest_api_id = aws_api_gateway_rest_api.api_gateway_microservice_rest_api.id
+  stage_name  = "v1_new"
+  deployment_id = aws_api_gateway_deployment.api_gateway_microservice_rest_api_deployment_v1.id
+  xray_tracing_enabled = var.api_gateway_enable_xray
+
+  variables = {
+    hash = sha256(var.schema)
+  }
+
+}
+
 resource "aws_api_gateway_base_path_mapping" "gateway_base_path_mapping" {
   api_id      = aws_api_gateway_rest_api.api_gateway_microservice_rest_api.id
-  stage_name  = aws_api_gateway_deployment.api_gateway_microservice_rest_api_deployment_v1.stage_name
+  stage_name  = aws_api_gateway_stage.api_gateway_microservice_stage_v1.stage_name
   domain_name = var.domain_name
   base_path   = var.base_path
 }
