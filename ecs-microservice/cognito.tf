@@ -95,7 +95,7 @@ resource "aws_s3_bucket_object" "slack" {
   count      = length(var.cognito_slack_webhook) > 0 ? 1 : 0
 
   bucket  = var.cognito_bucket
-  key     = "${var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
+  key     = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
   acl     = "bucket-owner-full-control"
   content = var.cognito_slack_webhook
 }
