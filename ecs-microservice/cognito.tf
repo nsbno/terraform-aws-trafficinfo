@@ -90,8 +90,9 @@ resource "aws_ssm_parameter" "cognito-url" {
 # For example traffic-control, traffic-gui and info.
 ###########################################################
 
+# TODO move into main trafficinfo-aws repo instead.
 # Set slack webhook url for notification for delegated cognito config.
-resource "aws_s3_bucket_object" "slack" {
+resource "aws_s3_bucket_object" "delegated-cognito-slack-webhook" {
   count      = length(var.cognito_slack_webhook) > 0 ? 1 : 0
 
   bucket  = var.cognito_bucket
@@ -102,7 +103,7 @@ resource "aws_s3_bucket_object" "slack" {
 
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
-resource "aws_s3_bucket_object" "config" {
+resource "aws_s3_bucket_object" "delegated-cognito-config" {
   count      = var.create_resource_server > 0 ? 1 : 0
 
   bucket = var.cognito_bucket
@@ -134,4 +135,41 @@ resource "aws_s3_bucket_object" "config" {
     }
   })
   content_type = "application/json"
+}
+
+##
+# Read Credentials from Secrets Manager and set in microservice SSM config.
+#
+# Using workaround using time_sleep for asynch pipeline in cognito to complete
+# configuration of resource server and application client in delgated cognito.
+# Using conditionally check using count beacuse without the account id
+# provided it is not possible to read the credentials, and I want the
+# variable to be optional so that everything is backwards compatible
+# with existing ecs-microservice definitions.
+resource "time_sleep" "wait_for_credentials" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  depends_on = [aws_s3_bucket_object.delegated-cognito-config]
+  create_duration = "30s"
+}
+
+data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  depends_on = [time_sleep.wait_for_credentials]
+  secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
+}
+
+resource "aws_ssm_parameter" "client_id" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
+  type      = "SecureString"
+  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials.secret_string)["client_id"]
+  overwrite = true
+}
+
+resource "aws_ssm_parameter" "client_secret" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
+  type      = "SecureString"
+  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials.secret_string)["client_secret"]
+  overwrite = true
 }

@@ -282,3 +282,9 @@ variable "cognito_env" {
   type        = string
   default     = ""
 }
+
+variable "cognito_account_id" {
+  description = "(Optional) Set cognito account id from where to read the Client ID and Client Secret from."
+  type        = string
+  default     = ""
+}
