@@ -162,7 +162,7 @@ resource "aws_ssm_parameter" "client_id" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
   type      = "SecureString"
-  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials.secret_string)["client_id"]
+  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
   overwrite = true
 }
 
@@ -170,6 +170,6 @@ resource "aws_ssm_parameter" "client_secret" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
   type      = "SecureString"
-  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials.secret_string)["client_secret"]
+  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
   overwrite = true
 }
