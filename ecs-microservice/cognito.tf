@@ -90,17 +90,6 @@ resource "aws_ssm_parameter" "cognito-url" {
 # For example traffic-control, traffic-gui and info.
 ###########################################################
 
-# TODO move into main trafficinfo-aws repo instead.
-# Set slack webhook url for notification for delegated cognito config.
-resource "aws_s3_bucket_object" "delegated-cognito-slack-webhook" {
-  count      = length(var.cognito_slack_webhook) > 0 ? 1 : 0
-
-  bucket  = var.cognito_bucket
-  key     = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/SLACK_WEBHOOK_URL"
-  acl     = "bucket-owner-full-control"
-  content = var.cognito_slack_webhook
-}
-
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
@@ -140,16 +129,19 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 ##
 # Read Credentials from Secrets Manager and set in microservice SSM config.
 #
-# Using workaround using time_sleep for asynch pipeline in cognito to complete
-# configuration of resource server and application client in delgated cognito.
-# Using conditionally check using count beacuse without the account id
+# Using workaround using time_sleep for async pipeline in cognito to complete
+# configuration of resource server and application client in delegated cognito.
+# Using conditionally check using count because without the account id
 # provided it is not possible to read the credentials, and I want the
 # variable to be optional so that everything is backwards compatible
 # with existing ecs-microservice definitions.
+#
+# The sleep wait will only occur when the dependent S3 file is updated
+# and during normal operation without changes it will not pause here.
 resource "time_sleep" "wait_for_credentials" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   depends_on = [aws_s3_bucket_object.delegated-cognito-config]
-  create_duration = "30s"
+  create_duration = "120s"
 }
 
 data "aws_secretsmanager_secret_version" "microservice_client_credentials" {

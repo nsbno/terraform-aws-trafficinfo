@@ -265,12 +265,6 @@ variable "grafana_create_dashboard" {
 # Configure Delegated Cognito config generation.
 #
 ##############################################
-variable "cognito_slack_webhook" {
-  description = "(Optional) If set upload config for slack webhook to delegated cognito via S3 bucket."
-  type        = string
-  default     = ""
-}
-
 variable "cognito_bucket" {
   description = "(Optional) Configure where to upload delegated cognito config. Default is vydev-delegated-cognito-staging."
   type        = string
