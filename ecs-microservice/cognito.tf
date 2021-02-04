@@ -140,7 +140,6 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 # and during normal operation without changes it will not pause here.
 resource "time_sleep" "wait_for_credentials" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
-  depends_on = [aws_s3_bucket_object.delegated-cognito-config]
   create_duration = "120s"
 
   triggers = {
@@ -151,12 +150,13 @@ resource "time_sleep" "wait_for_credentials" {
 }
 
 data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
-  depends_on = [time_sleep.wait_for_credentials]
+  depends_on = [aws_s3_bucket_object.delegated-cognito-config]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
 }
 
 resource "aws_ssm_parameter" "client_id" {
+  depends_on = [data.aws_secretsmanager_secret_version]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
   type      = "SecureString"
@@ -165,6 +165,7 @@ resource "aws_ssm_parameter" "client_id" {
 }
 
 resource "aws_ssm_parameter" "client_secret" {
+  depends_on = [data.aws_secretsmanager_secret_version]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
   type      = "SecureString"
