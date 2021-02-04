@@ -141,6 +141,7 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 
 resource "time_sleep" "wait_for_credentials" {
 #  count = length(var.cognito_account_id)>0 ? 1 : 0
+  depends_on = [aws_s3_bucket_object.delegated-cognito-config[0]]
   create_duration = "120s"
 
   triggers = {
