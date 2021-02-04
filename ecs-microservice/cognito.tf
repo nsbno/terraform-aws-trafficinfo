@@ -138,35 +138,38 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 #
 # The sleep wait will only occur when the dependent S3 file is updated
 # and during normal operation without changes it will not pause here.
-data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
-  secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
-}
 
 resource "time_sleep" "wait_for_credentials" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
+#  count = length(var.cognito_account_id)>0 ? 1 : 0
   create_duration = "120s"
 
   triggers = {
-    trigger_content = aws_s3_bucket_object.delegated-cognito-config[0].content_base64
+    file_content = aws_s3_bucket_object.delegated-cognito-config[0].content_base64
+    file_id = aws_s3_bucket_object.delegated-cognito-config[0].version_id
+    file_etag = aws_s3_bucket_object.delegated-cognito-config[0].etag
+
     client_id = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
     client_secret = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
   }
 }
 
+data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
+#  count = length(var.cognito_account_id)>0 ? 1 : 0
+  secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
+}
 
 resource "aws_ssm_parameter" "client_id" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
+#  count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
   type      = "SecureString"
-  value     = time_sleep.wait_for_credentials[0].triggers["client_id"]
+  value     = time_sleep.wait_for_credentials.triggers["client_id"]
   overwrite = true
 }
 
 resource "aws_ssm_parameter" "client_secret" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
+#  count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
   type      = "SecureString"
-  value     = time_sleep.wait_for_credentials[0].triggers["client_secret"]
+  value     = time_sleep.wait_for_credentials.triggers["client_secret"]
   overwrite = true
 }
