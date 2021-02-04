@@ -157,7 +157,6 @@ data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
 }
 
 resource "aws_ssm_parameter" "client_id" {
-  depends_on = [time_sleep.wait_for_credentials]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
   type      = "SecureString"
@@ -166,7 +165,6 @@ resource "aws_ssm_parameter" "client_id" {
 }
 
 resource "aws_ssm_parameter" "client_secret" {
-  depends_on = [time_sleep.wait_for_credentials]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
   type      = "SecureString"
