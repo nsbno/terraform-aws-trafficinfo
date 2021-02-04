@@ -143,13 +143,13 @@ resource "time_sleep" "wait_for_credentials" {
   create_duration = "120s"
 
   triggers = {
-    s3_id = aws_s3_bucket_object.delegated-cognito-config[0].id
     client_id = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
     client_secret = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
   }
 }
 
 data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
+  depends_on = [aws_s3_bucket_object.delegated-cognito-config]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
 }
