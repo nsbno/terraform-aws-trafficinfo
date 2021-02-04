@@ -159,7 +159,7 @@ resource "aws_ssm_parameter" "client_id" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
   type      = "SecureString"
-  value     = [time_sleep.wait_for_credentials[0].triggers["client_id"]]
+  value     = time_sleep.wait_for_credentials[0].triggers["client_id"]
   overwrite = true
 }
 
@@ -167,6 +167,6 @@ resource "aws_ssm_parameter" "client_secret" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
   type      = "SecureString"
-  value     = [time_sleep.wait_for_credentials[0].triggers["client_secret"]]
+  value     = time_sleep.wait_for_credentials[0].triggers["client_secret"]
   overwrite = true
 }
