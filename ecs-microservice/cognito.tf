@@ -148,8 +148,8 @@ resource "time_sleep" "wait_for_credentials" {
     file_id = aws_s3_bucket_object.delegated-cognito-config[0].version_id
     file_etag = aws_s3_bucket_object.delegated-cognito-config[0].etag
 
-    client_id = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
-    client_secret = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
+    client_id = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials.secret_string)["client_id"]
+    client_secret = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials.secret_string)["client_secret"]
   }
 }
 
