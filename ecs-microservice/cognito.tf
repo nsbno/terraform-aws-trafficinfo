@@ -93,6 +93,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
   bucket = var.cognito_bucket
   key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
@@ -135,14 +136,15 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 # and during normal operation without changes it will not pause here.
 resource "time_sleep" "wait_for_credentials" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
-  create_duration = "30s"
+  create_duration = "240s"
 
   triggers = {
-    config_md5 = md5(aws_s3_bucket_object.delegated-cognito-config.content)
+    config_md5 = md5(aws_s3_bucket_object.delegated-cognito-config[0].content)
   }
 }
 
 data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
+  depends_on = [aws_s3_bucket_object.delegated-cognito-config[0]]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
 }
