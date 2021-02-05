@@ -92,76 +92,81 @@ resource "aws_ssm_parameter" "cognito-url" {
 
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
-//resource "aws_s3_bucket_object" "delegated-cognito-config" {
-//  count      = var.create_resource_server > 0 ? 1 : 0
-//
-//  bucket = var.cognito_bucket
-//  key    = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
-//  acl    = "bucket-owner-full-control"
-//
-//  ## TODO maybe pull this out to a template to do more advanced conditional logic.
-//  content = jsonencode({
-//    # Configure resource server.
-//    resource_server = {
-//      name_prefix = "${var.name_prefix}-${var.service_name}"
-//      identifier  = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
-//
-//      scopes = [for key, value in var.resource_server_scopes : {
-//        scope_name        = value.scope_name
-//        scope_description = value.scope_description
-//      }]
-//    }
-//
-//    # Configure a user pool client
-//    # TODO. this should be conditionally toggled.
-//    user_pool_client = {
-//      name_prefix     = "${var.name_prefix}-${var.service_name}"
-//      generate_secret = true
-//
-//      allowed_oauth_flows                  = ["client_credentials"]
-//      allowed_oauth_scopes                 = var.app_client_scopes
-//      allowed_oauth_flows_user_pool_client = true
-//    }
-//  })
-//  content_type = "application/json"
-//}
-//
-//##
-//# Read Credentials from Secrets Manager and set in microservice SSM config.
-//#
-//# Using workaround using time_sleep for async pipeline in cognito to complete
-//# configuration of resource server and application client in delegated cognito.
-//# Using conditionally check using count because without the account id
-//# provided it is not possible to read the credentials, and I want the
-//# variable to be optional so that everything is backwards compatible
-//# with existing ecs-microservice definitions.
-//#
-//# The sleep wait will only occur when the dependent S3 file is updated
-//# and during normal operation without changes it will not pause here.
-//resource "time_sleep" "wait_for_credentials" {
-//  count = length(var.cognito_account_id)>0 ? 1 : 0
-//  depends_on = [aws_s3_bucket_object.delegated-cognito-config]
-//  create_duration = "120s"
-//}
-//
-//data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
-//  count = length(var.cognito_account_id)>0 ? 1 : 0
-//  depends_on = [time_sleep.wait_for_credentials]
-//  secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
-//}
-//
-//resource "aws_ssm_parameter" "client_id" {
-//  count = length(var.cognito_account_id)>0 ? 1 : 0
-//  name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
-//  type      = "SecureString"
-//  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
-//  overwrite = true
-//}
-//
-//resource "aws_ssm_parameter" "client_secret" {
-//  count = length(var.cognito_account_id)>0 ? 1 : 0
-//  name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
-//  type      = "SecureString"
-//  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
-//  overwrite = true
-//}
+resource "aws_s3_bucket_object" "delegated-cognito-config" {
+  bucket = var.cognito_bucket
+  key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
+  acl    = "bucket-owner-full-control"
+
+  ## TODO maybe pull this out to a template to do more advanced conditional logic.
+  content = jsonencode({
+    # Configure resource server.
+    resource_server = {
+      name_prefix = "${var.name_prefix}-${var.service_name}"
+      identifier  = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
+
+      scopes = [for key, value in var.resource_server_scopes : {
+        scope_name        = value.scope_name
+        scope_description = value.scope_description
+      }]
+    }
+
+    # Configure a user pool client
+    # TODO. this should be conditionally toggled.
+    user_pool_client = {
+      name_prefix     = "${var.name_prefix}-${var.service_name}"
+      generate_secret = true
+
+      allowed_oauth_flows                  = ["client_credentials"]
+      allowed_oauth_scopes                 = var.app_client_scopes
+      allowed_oauth_flows_user_pool_client = true
+    }
+  })
+  content_type = "application/json"
+}
+
+##
+# Read Credentials from Secrets Manager and set in microservice SSM config.
+# Store the md5 of the cognito config so that a change in md5/config
+# Will trigger a new update on dependent resources.
+#
+# Using workaround using time_sleep for async pipeline in cognito to complete
+# configuration of resource server and application client in delegated cognito.
+# The sleep wait will only occur when the dependent S3 file is updated
+# and during normal operation without changes it will not pause here.
+resource "time_sleep" "wait_for_credentials" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  create_duration = "30s"
+
+  triggers = {
+    config_md5 = md5(aws_s3_bucket_object.delegated-cognito-config.content)
+  }
+}
+
+data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
+}
+
+resource "aws_ssm_parameter" "client_id" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
+  type      = "SecureString"
+  value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
+  tags      = merge(var.tags, {
+    # store the md5 as a tag to establish a dependency to the wait_for_credentials resource
+    config_md5: time_sleep.wait_for_credentials[0].triggers.config_md5
+  })
+  overwrite = true
+}
+
+resource "aws_ssm_parameter" "client_secret" {
+  count = length(var.cognito_account_id)>0 ? 1 : 0
+  name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
+  type      = "SecureString"
+  value     =  jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
+  tags      = merge(var.tags, {
+    # store the md5 as a tag to establish a dependency to the wait_for_credentials resource
+    config_md5: time_sleep.wait_for_credentials[0].triggers.config_md5
+  })
+  overwrite = true
+}
