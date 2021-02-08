@@ -80,7 +80,6 @@ resource "aws_ssm_parameter" "cognito-url" {
   value = "https://auth.${var.hosted_zone_name}"
 }
 
-
 ###########################################################
 # Create Resource Server and App Client in the central Cognito
 #
@@ -136,7 +135,7 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 # and during normal operation without changes it will not pause here.
 resource "time_sleep" "wait_for_credentials" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
-  create_duration = "240s"
+  create_duration = "300s"
 
   triggers = {
     config_md5 = md5(aws_s3_bucket_object.delegated-cognito-config[0].content)
@@ -144,7 +143,7 @@ resource "time_sleep" "wait_for_credentials" {
 }
 
 data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
-  depends_on = [aws_s3_bucket_object.delegated-cognito-config[0]]
+  depends_on = [aws_s3_bucket_object.delegated-cognito-config[0], time_sleep.wait_for_credentials[0]]
   count = length(var.cognito_account_id)>0 ? 1 : 0
   secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
 }
