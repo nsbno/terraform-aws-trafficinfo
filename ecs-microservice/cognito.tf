@@ -138,7 +138,7 @@ resource "time_sleep" "wait_for_credentials" {
   create_duration = "300s"
 
   triggers = {
-    config_md5 = sha1(aws_s3_bucket_object.delegated-cognito-config[0].content)
+    config_hash = sha1(aws_s3_bucket_object.delegated-cognito-config[0].content)
   }
 }
 
@@ -156,8 +156,8 @@ resource "aws_ssm_parameter" "client_id" {
   type      = "SecureString"
   value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
   tags      = merge(var.tags, {
-    # store the sha1 as a tag to establish a dependency to the wait_for_credentials resource
-    config_md5: time_sleep.wait_for_credentials[0].triggers.config_md5
+    # store the hash as a tag to establish a dependency to the wait_for_credentials resource
+    config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
   })
   overwrite = true
 }
@@ -169,8 +169,8 @@ resource "aws_ssm_parameter" "client_secret" {
   type      = "SecureString"
   value     =  jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
   tags      = merge(var.tags, {
-    # store the sha1 as a tag to establish a dependency to the wait_for_credentials resource
-    config_md5: time_sleep.wait_for_credentials[0].triggers.config_md5
+    # store the hash as a tag to establish a dependency to the wait_for_credentials resource
+    config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
   })
   overwrite = true
 }
