@@ -94,7 +94,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   bucket = var.cognito_bucket
-  key    = "${var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
+  key    = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
   ## TODO maybe pull this out to a template to do more advanced conditional logic.
@@ -150,6 +150,7 @@ data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
+# TODO probably find a more suitable name for the parameter.
 resource "aws_ssm_parameter" "client_id" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
@@ -163,6 +164,7 @@ resource "aws_ssm_parameter" "client_id" {
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
+# TODO probably find a more suitable name for the parameter.
 resource "aws_ssm_parameter" "client_secret" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
