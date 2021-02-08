@@ -150,7 +150,7 @@ data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
-# TODO probably find a more suitable name for the parameter.
+# TODO probably find a more suitable name/location for the parameter.
 resource "aws_ssm_parameter" "client_id" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
@@ -164,7 +164,7 @@ resource "aws_ssm_parameter" "client_id" {
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
-# TODO probably find a more suitable name for the parameter.
+# TODO probably find a more suitable name/location for the parameter.
 resource "aws_ssm_parameter" "client_secret" {
   count = length(var.cognito_account_id)>0 ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
