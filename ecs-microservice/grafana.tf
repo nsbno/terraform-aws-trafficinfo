@@ -54,6 +54,6 @@ resource "grafana_dashboard" "sns_dashboard_in_folder" {
     "service_name" : var.service_name
     "topic_names": var.grafana_sns_topic_names
     "region" : "eu-west-1"
-    "uuid" : md5("RDS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
+    "uuid" : md5("SNS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
 }
