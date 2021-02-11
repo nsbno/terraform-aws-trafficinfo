@@ -44,7 +44,7 @@ resource "grafana_dashboard" "rds_dashboard_in_folder" {
 }
 
 resource "grafana_dashboard" "sns_dashboard_in_folder" {
-  count  = var.grafana_create_dashboard == true && length(var.sns_publish_topics) > 0 ? 1 : 0
+  count  = var.grafana_create_dashboard == true && length(var.grafana_sns_topic_names) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/sns-dashboard.tpl", {
     "name" : title("SNS ${var.service_name} ${var.environment}")
