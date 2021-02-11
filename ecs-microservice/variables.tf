@@ -249,6 +249,12 @@ variable "grafana_create_dashboard" {
   default     = false
 }
 
+variable "grafana_sns_topic_names" {
+  description = "(Optional) Specify topic names to create grafana dashboard."
+  type = list(string)
+  default = []
+}
+
 variable "api_gateway_enable_xray" {
   description = "Used to enable xray tracing in api gateway, default false"
   type        = bool
