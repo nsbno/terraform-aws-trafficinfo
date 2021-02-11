@@ -83,7 +83,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -117,7 +117,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -247,7 +247,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -281,7 +281,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -411,7 +411,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -442,7 +442,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -573,7 +573,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -607,7 +607,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -641,7 +641,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -771,7 +771,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -802,7 +802,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -929,7 +929,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -960,7 +960,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1087,7 +1087,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1118,7 +1118,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1245,7 +1245,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1276,7 +1276,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1403,7 +1403,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1434,7 +1434,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "functions": [],
           "group": {
@@ -1561,7 +1561,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -1595,7 +1595,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -1725,7 +1725,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -1759,7 +1759,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -1884,7 +1884,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
@@ -1918,7 +1918,7 @@
             "filter": ""
           },
           "dimensions": {
-            "DBInstanceIdentifier": "$dbinstanceidentifier"
+            "DBInstanceIdentifier": "${db_instance_identifier}"
           },
           "expression": "",
           "functions": [],
