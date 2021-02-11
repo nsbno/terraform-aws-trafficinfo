@@ -29,7 +29,7 @@ resource "grafana_dashboard" "dashboard_in_folder" {
 }
 
 resource "grafana_dashboard" "rds_dashboard_in_folder" {
-  count  = var.grafana_create_dashboard == true && length(var.rds_enabled) > 0 ? 1 : 0
+  count  = var.grafana_create_dashboard == true && length(var.grafana_db_instance_identifier) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/rds-dashboard.tpl", {
     "name" : title("RDS ${var.service_name} ${var.environment}")
@@ -37,7 +37,7 @@ resource "grafana_dashboard" "rds_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "db_instance_identifier": var.grafana_configuration.db_instance_identifier
+    "db_instance_identifier": var.grafana_db_instance_identifier
     "region" : "eu-west-1"
     "uuid" : md5("RDS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })

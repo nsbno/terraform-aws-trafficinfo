@@ -237,11 +237,10 @@ variable "service_alarm_memory_treshold" {
 # Configure Grafana Dashboard generation.
 #
 ##############################################
-variable grafana_configuration {
-  type = "map"
-  default = {
-    db_instance_identifier = "$dbinstanceidentifier"
-  }
+variable grafana_db_instance_identifier {
+  description = "(Optional) Specify db instance identifier to create grafana dashboard."
+  type    = string
+  default = ""
 }
 
 variable "grafana_create_dashboard" {
@@ -251,7 +250,7 @@ variable "grafana_create_dashboard" {
 }
 
 variable "api_gateway_enable_xray" {
-  description = "Used to enable xray traicng in api gateway, default false"
+  description = "Used to enable xray tracing in api gateway, default false"
   type        = bool
   default     = false
 }
