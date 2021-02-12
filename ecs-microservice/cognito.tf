@@ -78,6 +78,7 @@ resource "aws_ssm_parameter" "cognito-url" {
   name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
   type  = "String"
   value = "https://auth.${var.hosted_zone_name}"
+  overwrite = true
 }
 
 ###########################################################
@@ -186,4 +187,5 @@ resource "aws_ssm_parameter" "central_cognito_url" {
 
   # Use default environment, or overridden cognito environment.
   value = "https://auth.${length(var.cognito_env)>0 ? var.cognito_env : var.environment}.cognito.vydev.io"
+  overwrite = true
 }
