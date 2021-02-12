@@ -92,7 +92,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
-  count =  var.cognito_bucket > 0 ? 1 : 0
+  count =  length(var.cognito_bucket) > 0 ? 1 : 0
   bucket = var.cognito_bucket
   key    = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
