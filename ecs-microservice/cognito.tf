@@ -54,7 +54,7 @@ resource "aws_cognito_user_pool_client" "app_client" {
 # SSM Parameters to configure the cognito clientid for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-clientid" {
-  count     = var.create_app_client > 0 ? 1 : 0
+  count = (var.cognito_use_central==false && var.create_app_client > 0) ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/cognito/clientId"
   type      = "String"
   value     = aws_cognito_user_pool_client.app_client[0].id
@@ -64,7 +64,7 @@ resource "aws_ssm_parameter" "cognito-clientid" {
 # SSM Parameters to configure the cognito clientsecret for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-clientsecret" {
-  count     = var.create_app_client > 0 ? 1 : 0
+  count = (var.cognito_use_central==false && var.create_app_client > 0) ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/cognito/clientSecret"
   type      = "String"
   value     = aws_cognito_user_pool_client.app_client[0].client_secret
@@ -74,7 +74,7 @@ resource "aws_ssm_parameter" "cognito-clientsecret" {
 # SSM Parameters to configure the cognito endpoint url for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-url" {
-  count = var.create_app_client > 0 ? 1 : 0
+  count = (var.cognito_use_central==false && var.create_app_client > 0) ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
   type  = "String"
   value = "https://auth.${var.hosted_zone_name}"
@@ -92,7 +92,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
+  count =  var.cognito_bucket > 0 ? 1 : 0
   bucket = var.cognito_bucket
   key    = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
@@ -111,7 +111,7 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
     }
 
     # Configure a user pool client
-    # TODO. this should be conditionally toggled.
+    # TODO. this should be conditionally toggled by checking create_app_client.
     user_pool_client = {
       name_prefix     = "${var.name_prefix}-${var.service_name}"
       generate_secret = true
@@ -134,7 +134,7 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
 # The sleep wait will only occur when the dependent S3 file is updated
 # and during normal operation without changes it will not pause here.
 resource "time_sleep" "wait_for_credentials" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
+  count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
   create_duration = "300s"
 
   triggers = {
@@ -145,15 +145,15 @@ resource "time_sleep" "wait_for_credentials" {
 # The client credentials that are stored in Central Cognito.
 data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
   depends_on = [aws_s3_bucket_object.delegated-cognito-config[0], time_sleep.wait_for_credentials[0]]
-  count = length(var.cognito_account_id)>0 ? 1 : 0
+  count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
   secret_id = "arn:aws:secretsmanager:eu-west-1:${var.cognito_account_id}:secret:${local.current_account_id}-${var.name_prefix}-${var.service_name}"
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
 # TODO probably find a more suitable name/location for the parameter.
-resource "aws_ssm_parameter" "client_id" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
-  name      = "/${var.name_prefix}/config/${var.service_name}/client_id"
+resource "aws_ssm_parameter" "central_client_id" {
+  count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
+  name      =  "/${var.name_prefix}/config/${var.service_name}/cognito/clientId"
   type      = "SecureString"
   value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
   tags      = merge(var.tags, {
@@ -165,9 +165,9 @@ resource "aws_ssm_parameter" "client_id" {
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
 # TODO probably find a more suitable name/location for the parameter.
-resource "aws_ssm_parameter" "client_secret" {
-  count = length(var.cognito_account_id)>0 ? 1 : 0
-  name      = "/${var.name_prefix}/config/${var.service_name}/client_secret"
+resource "aws_ssm_parameter" "central_client_secret" {
+  count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
+  name      =  "/${var.name_prefix}/config/${var.service_name}/cognito/clientSecret"
   type      = "SecureString"
   value     =  jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
   tags      = merge(var.tags, {
@@ -175,4 +175,15 @@ resource "aws_ssm_parameter" "client_secret" {
     config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
   })
   overwrite = true
+}
+
+# SSM Parameters to configure the cognito endpoint url for microservice when requesting
+# access tokens from Cognito to communicate with other services.
+resource "aws_ssm_parameter" "central_cognito_url" {
+  count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
+  name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
+  type  = "String"
+
+  # Use default environment, or overridden cognito environment.
+  value = "https://auth.${length(var.cognito_env)>0 ? var.cognito_env : var.environment}.cognito.vydev.io"
 }

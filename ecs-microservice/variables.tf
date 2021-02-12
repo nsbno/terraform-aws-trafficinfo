@@ -282,3 +282,9 @@ variable "cognito_account_id" {
   type        = string
   default     = ""
 }
+
+variable "cognito_use_central" {
+  description = "(Optional) Use the Central Cognito instance. Default is False."
+  type        = bool
+  default     = false
+}
