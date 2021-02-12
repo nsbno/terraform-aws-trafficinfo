@@ -13,7 +13,7 @@
     ]
   },
   "description": "Visualize AWS SNS metrics",
-  "editable": false,
+  "editable": true,
   "gnetId": 581,
   "graphTooltip": 0,
   "id": null,
@@ -65,7 +65,7 @@
       "targets": [
        %{ for topic_name in topic_names ~}
         {
-          "alias": "",
+          "alias": "${topic_name}_sum",
           "application": {
             "filter": ""
           },
@@ -185,7 +185,7 @@
       "targets": [
         %{ for topic_name in topic_names ~}
         {
-          "alias": "",
+          "alias": "${topic_name}_sum",
           "application": {
             "filter": ""
           },
@@ -217,7 +217,7 @@
           ]
         },
         {
-          "alias": "",
+          "alias": "${topic_name}_sum",
           "application": {
             "filter": ""
           },
@@ -339,7 +339,7 @@
       %{ for topic_name in topic_names ~}
 
         {
-          "alias": "",
+          "alias": "${topic_name}_sum",
           "application": {
             "filter": ""
           },
@@ -460,7 +460,7 @@
 
       %{ for topic_name in topic_names ~}
         {
-          "alias": "",
+          "alias": "${topic_name}_sum",
           "application": {
             "filter": ""
           },
