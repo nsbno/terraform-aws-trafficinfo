@@ -484,7 +484,7 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${element(split(":", topic_name), -1}",
+          "refId": "${element(split(":", topic_name), -1)}",
           "region": "${region}",
           "statistics": [
             "Average"
