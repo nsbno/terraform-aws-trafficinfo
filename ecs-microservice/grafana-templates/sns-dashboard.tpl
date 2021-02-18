@@ -65,12 +65,12 @@
       "targets": [
        %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "${element(split(":", topic_name), -1)}_sum",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "${element(split(":", topic_name), -1)}"
           },
           "functions": [],
           "group": {
@@ -90,7 +90,7 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
+          "refId": "${element(split(":", topic_name), -1)}",
           "region": "${region}",
           "statistics": [
             "Sum"
@@ -185,12 +185,12 @@
       "targets": [
         %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "${element(split(":", topic_name), -1)}_sum",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "${element(split(":", topic_name), -1)}"
           },
           "functions": [],
           "group": {
@@ -210,19 +210,19 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}A",
+          "refId": "${element(split(":", topic_name), -1)}A",
           "region": "$region",
           "statistics": [
             "Sum"
           ]
         },
         {
-          "alias": "${topic_name}_sum",
+          "alias": "${element(split(":", topic_name), -1)}_sum",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "${element(split(":", topic_name), -1)}"
           },
           "functions": [],
           "group": {
@@ -242,7 +242,7 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}B",
+          "refId": "${element(split(":", topic_name), -1)}B",
           "region": "${region}",
           "statistics": [
             "Sum"
@@ -339,12 +339,12 @@
       %{ for topic_name in topic_names ~}
 
         {
-          "alias": "${topic_name}_sum",
+          "alias": "${element(split(":", topic_name), -1)}_sum",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "${element(split(":", topic_name), -1)}"
           },
           "functions": [],
           "group": {
@@ -364,7 +364,7 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
+          "refId": "${element(split(":", topic_name), -1)}",
           "region": "${region}",
           "statistics": [
             "Sum"
@@ -460,12 +460,12 @@
 
       %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "${element(split(":", topic_name), -1)}_sum",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "${element(split(":", topic_name), -1)}"
           },
           "functions": [],
           "group": {
@@ -484,7 +484,7 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
+          "refId": "${element(split(":", topic_name), -1}",
           "region": "${region}",
           "statistics": [
             "Average"
