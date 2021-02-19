@@ -157,11 +157,12 @@ resource "aws_ssm_parameter" "central_client_id" {
   name      =  "/${var.name_prefix}/config/${var.service_name}/cognito/clientId"
   type      = "SecureString"
   value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
+  overwrite = true
+
+  # store the hash as a tag to establish a dependency to the wait_for_credentials resource
   tags      = merge(var.tags, {
-    # store the hash as a tag to establish a dependency to the wait_for_credentials resource
     config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
   })
-  overwrite = true
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
@@ -171,11 +172,12 @@ resource "aws_ssm_parameter" "central_client_secret" {
   name      =  "/${var.name_prefix}/config/${var.service_name}/cognito/clientSecret"
   type      = "SecureString"
   value     =  jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
+  overwrite = true
+
+  # store the hash as a tag to establish a dependency to the wait_for_credentials resource
   tags      = merge(var.tags, {
-    # store the hash as a tag to establish a dependency to the wait_for_credentials resource
     config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
   })
-  overwrite = true
 }
 
 # SSM Parameters to configure the cognito endpoint url for microservice when requesting
@@ -184,6 +186,11 @@ resource "aws_ssm_parameter" "central_cognito_url" {
   count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
   type  = "String"
+
+  # store the hash as a tag to establish a dependency to the wait_for_credentials resource
+  tags      = merge(var.tags, {
+    config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
+  })
 
   # Use default environment, or overridden cognito environment.
   value = "https://auth.${length(var.cognito_env)>0 ? var.cognito_env : var.environment}.cognito.vydev.io"
@@ -198,6 +205,11 @@ resource "aws_ssm_parameter" "central_cognito_jwks_url" {
   count = var.cognito_use_central ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/jwksUrl"
   type  = "String"
+
+  # store the hash as a tag to establish a dependency to the wait_for_credentials resource
+  tags      = merge(var.tags, {
+    config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
+  })
 
   # Use default environment, or overridden cognito environment.
   value = "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_Z53b9AbeT/.well-known/jwks.json"
