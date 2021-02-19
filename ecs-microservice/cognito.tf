@@ -189,3 +189,17 @@ resource "aws_ssm_parameter" "central_cognito_url" {
   value = "https://auth.${length(var.cognito_env)>0 ? var.cognito_env : var.environment}.cognito.vydev.io"
   overwrite = true
 }
+
+# SSM Parameters to configure the cognito endpoint jwks url to the microservice.
+# used to verify the signature in the received access token.
+# See the configuration of the jwt token verification in the microservice application-cloud.yml
+# for how this is configured for each microservice.
+resource "aws_ssm_parameter" "central_cognito_jwks_url" {
+  count = var.cognito_use_central ? 1 : 0
+  name  = "/${var.name_prefix}/config/${var.service_name}/jwksUrl"
+  type  = "String"
+
+  # Use default environment, or overridden cognito environment.
+  value = "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_Z53b9AbeT/.well-known/jwks.json"
+  overwrite = true
+}
