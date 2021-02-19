@@ -154,7 +154,7 @@ data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
 # TODO probably find a more suitable name/location for the parameter.
 resource "aws_ssm_parameter" "central_client_id" {
   count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
-  name      =  "/${var.name_prefix}/config/${var.service_name}/cognito/clientId"
+  name      =  "/${var.name_prefix}/config/${var.service_name}/cognito.clientId"
   type      = "SecureString"
   value     = jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_id"]
   overwrite = true
@@ -169,7 +169,7 @@ resource "aws_ssm_parameter" "central_client_id" {
 # TODO probably find a more suitable name/location for the parameter.
 resource "aws_ssm_parameter" "central_client_secret" {
   count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
-  name      =  "/${var.name_prefix}/config/${var.service_name}/cognito/clientSecret"
+  name      =  "/${var.name_prefix}/config/${var.service_name}/cognito.clientSecret"
   type      = "SecureString"
   value     =  jsondecode(data.aws_secretsmanager_secret_version.microservice_client_credentials[0].secret_string)["client_secret"]
   overwrite = true
@@ -184,7 +184,7 @@ resource "aws_ssm_parameter" "central_client_secret" {
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "central_cognito_url" {
   count = (var.cognito_use_central && var.create_app_client > 0) ? 1 : 0
-  name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
+  name  = "/${var.name_prefix}/config/${var.service_name}/cognito.url"
   type  = "String"
 
   # store the hash as a tag to establish a dependency to the wait_for_credentials resource
