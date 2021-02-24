@@ -12,12 +12,12 @@
       }
     ]
   },
-  "description": "Visualize AWS SNS metrics",
+  "description": "Visualize AWS SQS metrics",
   "editable": true,
-  "gnetId": 581,
+  "gnetId": 584,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1529018086150,
+  "iteration": 1529069302464,
   "links": [],
   "panels": [
     {
@@ -31,12 +31,12 @@
       "fill": 1,
       "grid": {},
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 1,
+      "id": 7,
       "isNew": true,
       "legend": {
         "alignAsTable": true,
@@ -47,7 +47,7 @@
         "show": true,
         "sort": "current",
         "sortDesc": true,
-        "total": true,
+        "total": false,
         "values": true
       },
       "lines": true,
@@ -63,46 +63,104 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-       %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "QueueName": "${queue_name}"
           },
           "functions": [],
           "group": {
             "filter": ""
           },
-          "highResolution": false,
           "host": {
             "filter": ""
           },
           "item": {
             "filter": ""
           },
-          "metricName": "NumberOfMessagesPublished",
+          "metricName": "NumberOfMessagesDeleted",
           "mode": 0,
-          "namespace": "AWS/SNS",
+          "namespace": "AWS/SQS",
           "options": {
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
-          "region": "${region}",
+          "refId": "A",
+          "region": "$region",
           "statistics": [
-            "Sum"
+            "Average"
           ]
         },
-      %{ endfor ~}
-        {}
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "dimensions": {
+            "QueueName": "${queue_name}"
+          },
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "metricName": "NumberOfMessagesReceived",
+          "mode": 0,
+          "namespace": "AWS/SQS",
+          "options": {
+            "showDisabledItems": false
+          },
+          "period": "",
+          "refId": "B",
+          "region": "$region",
+          "statistics": [
+            "Average"
+          ]
+        },
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "dimensions": {
+            "QueueName": "${queue_name}"
+          },
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "metricName": "NumberOfMessagesSent",
+          "mode": 0,
+          "namespace": "AWS/SQS",
+          "options": {
+            "showDisabledItems": false
+          },
+          "period": "",
+          "refId": "C",
+          "region": "$region",
+          "statistics": [
+            "Average"
+          ]
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "NumberOfMessagesPublished",
+      "title": "Messages",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -154,7 +212,123 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 8
+      },
+      "id": 1,
+      "isNew": true,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "dimensions": {
+            "QueueName": "${queue_name}"
+          },
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "metricName": "ApproximateAgeOfOldestMessage",
+          "mode": 0,
+          "namespace": "AWS/SQS",
+          "options": {
+            "showDisabledItems": false
+          },
+          "period": "",
+          "refId": "A",
+          "region": "$region",
+          "statistics": [
+            "Average"
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "ApproximateAgeOfOldestMessage",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${name_prefix}-${environment}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 15
       },
       "id": 4,
       "isNew": true,
@@ -183,78 +357,104 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-        %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "QueueName": "${queue_name}"
           },
           "functions": [],
           "group": {
             "filter": ""
           },
-          "highResolution": false,
           "host": {
             "filter": ""
           },
           "item": {
             "filter": ""
           },
-          "metricName": "NumberOfNotificationsDelivered",
+          "metricName": "ApproximateNumberOfMessagesVisible",
           "mode": 0,
-          "namespace": "AWS/SNS",
+          "namespace": "AWS/SQS",
           "options": {
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}A",
+          "refId": "C",
           "region": "$region",
           "statistics": [
-            "Sum"
+            "Average"
           ]
         },
         {
-          "alias": "${topic_name}_sum",
+          "alias": "",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "QueueName": "${queue_name}"
           },
           "functions": [],
           "group": {
             "filter": ""
           },
-          "highResolution": false,
           "host": {
             "filter": ""
           },
           "item": {
             "filter": ""
           },
-          "metricName": "NumberOfNotificationsFailed",
+          "metricName": "ApproximateNumberOfMessagesNotVisible",
           "mode": 0,
-          "namespace": "AWS/SNS",
+          "namespace": "AWS/SQS",
           "options": {
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}B",
-          "region": "${region}",
+          "refId": "A",
+          "region": "$region",
           "statistics": [
-            "Sum"
+            "Average"
           ]
         },
-      %{ endfor ~}
-        {}
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "dimensions": {
+            "QueueName": "${queue_name}"
+          },
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "metricName": "ApproximateNumberOfMessagesDelayed",
+          "mode": 0,
+          "namespace": "AWS/SQS",
+          "options": {
+            "showDisabledItems": false
+          },
+          "period": "",
+          "refId": "B",
+          "region": "$region",
+          "statistics": [
+            "Average"
+          ]
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Notifications",
+      "title": "ApproximateNumberOfMessages",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -306,9 +506,9 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 22
       },
-      "id": 3,
+      "id": 6,
       "isNew": true,
       "legend": {
         "alignAsTable": true,
@@ -319,7 +519,7 @@
         "show": true,
         "sort": "current",
         "sortDesc": true,
-        "total": true,
+        "total": false,
         "values": true
       },
       "lines": true,
@@ -335,48 +535,158 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-
-      %{ for topic_name in topic_names ~}
-
         {
-          "alias": "${topic_name}_sum",
+          "alias": "",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "QueueName": "${queue_name}"
           },
           "functions": [],
           "group": {
             "filter": ""
           },
-          "highResolution": false,
           "host": {
             "filter": ""
           },
           "item": {
             "filter": ""
           },
-          "metricName": "PublishSize",
+          "metricName": "NumberOfEmptyReceives",
           "mode": 0,
-          "namespace": "AWS/SNS",
+          "namespace": "AWS/SQS",
           "options": {
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
-          "region": "${region}",
+          "refId": "A",
+          "region": "$region",
           "statistics": [
-            "Sum"
+            "Average"
           ]
-        },
-      %{ endfor ~}
-        {}
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "PublishSize",
+      "title": "NumberOfEmptyReceives",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${name_prefix}-${environment}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 10,
+      "isNew": true,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "dimensions": {
+            "QueueName": "${queue_name}"
+          },
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "metricName": "SentMessageSize",
+          "mode": 0,
+          "namespace": "AWS/SQS",
+          "options": {
+            "showDisabledItems": false
+          },
+          "period": "",
+          "refId": "A",
+          "region": "$region",
+          "statistics": [
+            "Average"
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "SentMessageSize",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -415,134 +725,14 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${name_prefix}-${environment}",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "grid": {},
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 6,
-      "isNew": true,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "current",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-
-      %{ for topic_name in topic_names ~}
-        {
-          "alias": "${topic_name}_sum",
-          "application": {
-            "filter": ""
-          },
-          "dimensions": {
-            "TopicName": "${topic_name}"
-          },
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "host": {
-            "filter": ""
-          },
-          "item": {
-            "filter": ""
-          },
-          "metricName": "SMSSuccessRate",
-          "mode": 0,
-          "namespace": "AWS/SNS",
-          "options": {
-            "showDisabledItems": false
-          },
-          "period": "",
-          "refId": "${topic_name}",
-          "region": "${region}",
-          "statistics": [
-            "Average"
-          ]
-        },
-      %{ endfor ~}
-        {}
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "SMSSuccessRate",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "content": "",
+      "content": "<a style=\"float: right\" href=\"http://www.monitoringartist.com\" target=\"_blank\" title=\"Dashboard maintained by Monitoring Artist - DevOps / Docker / Kubernetes / AWS ECS / Google GCP / Zabbix / Zenoss / Terraform / Monitoring\"><img src=\"https://monitoringartist.github.io/monitoring-artist-logo-grafana.png\" height=\"30px\" /></a>\n<a style=\"float: left\"  target=\"_blank\" href=\"http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/sqs-metricscollected.html\">AWS CloudWatch SQS documentation</a><br/>\n<a style=\"float: left\"  target=\"_blank\" href=\"https://grafana.com/dashboards/584\">Installed from Grafana.com dashboards</a>\n<div style=\"clear:both; width:100%;height:0;font-size:0;\"></div>",
       "editable": true,
       "error": false,
       "gridPos": {
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 36
       },
       "id": 2,
       "isNew": true,
@@ -594,7 +784,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "AWS SNS",
-  "uid": "${uuid}",
+  "title": "AWS SQS",
+  "uid": "AWSSQS000",
   "version": 1
 }
