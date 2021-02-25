@@ -18,6 +18,7 @@ locals {
     for arn in var.sqs_queues :
     element(split(":", arn), length(split(":", arn))-1)
   ]
+  sqs_filter = "/(${join("|", local.sqs_queue_names)})/"
 }
 
 resource "grafana_folder" "collection" {
@@ -78,7 +79,7 @@ resource "grafana_dashboard" "sqs_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "queue_name" : local.sqs_queue_names[0]
+    "queue_name_filter" : local.sqs_filter
     "region" : "eu-west-1"
     "uuid" : md5("SQS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
