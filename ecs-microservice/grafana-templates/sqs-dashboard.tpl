@@ -103,7 +103,7 @@
           },
           "period": "",
           "refId": "A",
-          "region": "$region",
+          "region": "${region}",
           "statistics": [
             "Average"
           ]
@@ -168,14 +168,14 @@
           ]
         },
         "datasource": "${name_prefix}-${environment}",
-        "definition": "dimension_values($region,AWS/SQS,NumberOfMessagesReceived,QueueName)",
+        "definition": "dimension_values(${region},AWS/SQS,NumberOfMessagesReceived,QueueName)",
         "hide": 2,
         "includeAll": true,
         "label": "Queue name",
         "multi": true,
         "name": "queue",
         "options": [],
-        "query": "dimension_values($region,AWS/SQS,NumberOfMessagesReceived,QueueName)",
+        "query": "dimension_values(${region},AWS/SQS,NumberOfMessagesReceived,QueueName)",
         "refresh": 1,
         "regex": "${queue_name_filter}",
         "skipUrlSync": false,
