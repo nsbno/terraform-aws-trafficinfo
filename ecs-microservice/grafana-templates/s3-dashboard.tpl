@@ -278,20 +278,26 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "${name_prefix}-${environment}",
         "definition": "dimension_values(${region},AWS/S3,NumberOfObjects,BucketName)",
-        "hide": 0,
-        "includeAll": false,
+        "hide": 2,
+        "includeAll": true,
         "label": "Bucket",
-        "multi": false,
+        "multi": true,
         "name": "bucket",
         "options": [],
         "query": "dimension_values(${region},AWS/S3,NumberOfObjects,BucketName)",
         "refresh": 1,
         "regex": "${s3_bucket_name_filter}",
         "skipUrlSync": false,
-        "sort": 1,
+        "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
