@@ -181,7 +181,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "{{TopicName}}",
+          "alias": "{{TopicName}}_develivered",
           "application": {
             "filter": ""
           },
@@ -213,7 +213,7 @@
           ]
         },
         {
-          "alias": "{{TopicName}}",
+          "alias": "{{TopicName}}_failed",
           "application": {
             "filter": ""
           },
