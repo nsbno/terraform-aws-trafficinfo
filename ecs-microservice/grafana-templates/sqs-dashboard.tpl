@@ -1203,7 +1203,12 @@
   "refresh": false,
   "schemaVersion": 25,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "terraform",
+    "${name}",
+    "${environment}",
+    "${name_prefix}"
+  ],
   "templating": {
     "list": [
       {
