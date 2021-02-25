@@ -64,7 +64,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "",
+          "alias": "{{BucketName}}",
           "application": {
             "filter": ""
           },
@@ -186,7 +186,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "",
+          "alias": "{{BucketName}}",
           "application": {
             "filter": ""
           },
