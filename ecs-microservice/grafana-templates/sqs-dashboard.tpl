@@ -1092,7 +1092,7 @@
         "y": 12
       },
       "hiddenSeries": false,
-      "id": 8,
+      "id": 9,
       "isNew": true,
       "legend": {
         "alignAsTable": true,
