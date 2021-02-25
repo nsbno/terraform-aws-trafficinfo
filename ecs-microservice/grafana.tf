@@ -78,7 +78,7 @@ resource "grafana_dashboard" "sqs_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "sqs_queue_names" : local.sqs_queue_names
+    "queue_name" : local.sqs_queue_names[0]
     "region" : "eu-west-1"
     "uuid" : md5("SQS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
