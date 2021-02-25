@@ -171,8 +171,8 @@
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 0,
-        "y": 8
+        "x": 8,
+        "y": 0
       },
       "hiddenSeries": false,
       "id": 2,
