@@ -59,7 +59,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -171,8 +171,8 @@
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 0,
-        "y": 8
+        "x": 8,
+        "y": 0
       },
       "hiddenSeries": false,
       "id": 2,
@@ -190,7 +190,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -302,8 +302,8 @@
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 0,
-        "y": 16
+        "x": 16,
+        "y": 0
       },
       "hiddenSeries": false,
       "id": 3,
@@ -321,7 +321,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
