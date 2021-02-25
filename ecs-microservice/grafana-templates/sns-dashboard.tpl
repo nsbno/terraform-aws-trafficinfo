@@ -565,7 +565,7 @@
         "multi": true,
         "name": "topic",
         "options": [],
-        "query": "dimension_values(${region},AWS/SNS,,NumberOfMessagesPublished,TopicName)",
+        "query": "dimension_values(${region},AWS/SNS,NumberOfMessagesPublished,TopicName)",
         "refresh": 1,
         "regex": "${topic_name_filter}",
         "skipUrlSync": false,
