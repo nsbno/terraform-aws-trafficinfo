@@ -12,11 +12,11 @@ data "aws_region" "current" {}
 locals {
   sns_topic_names = [
     for arn in var.sns_publish_topics :
-    element(split(":", arn), -1)
+    element(split(":", arn), length(split(":", arn))-1)
   ]
   sqs_queue_names = [
     for arn in var.sqs_queues :
-    element(split(":", arn), -1)
+    element(split(":", arn), length(split(":", arn))-1)
   ]
 }
 
