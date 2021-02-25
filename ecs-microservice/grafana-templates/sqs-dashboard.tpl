@@ -302,8 +302,8 @@
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 0,
-        "y": 16
+        "x": 16,
+        "y": 0
       },
       "hiddenSeries": false,
       "id": 3,
