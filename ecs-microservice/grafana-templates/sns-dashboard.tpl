@@ -63,14 +63,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-       %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "{{TopicName}}",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "$topic"
           },
           "functions": [],
           "group": {
@@ -90,14 +89,12 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
+          "refId": "A",
           "region": "${region}",
           "statistics": [
             "Sum"
           ]
-        },
-      %{ endfor ~}
-        {}
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
@@ -183,14 +180,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-        %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "{{TopicName}}",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "$topic"
           },
           "functions": [],
           "group": {
@@ -210,19 +206,19 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}A",
-          "region": "$region",
+          "refId": "A",
+          "region": "${region}",
           "statistics": [
             "Sum"
           ]
         },
         {
-          "alias": "${topic_name}_sum",
+          "alias": "{{TopicName}}",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "$topic"
           },
           "functions": [],
           "group": {
@@ -242,14 +238,12 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}B",
+          "refId": "B",
           "region": "${region}",
           "statistics": [
             "Sum"
           ]
-        },
-      %{ endfor ~}
-        {}
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
@@ -335,16 +329,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-
-      %{ for topic_name in topic_names ~}
-
         {
-          "alias": "${topic_name}_sum",
+          "alias": "{{TopicName}}",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "$topic"
           },
           "functions": [],
           "group": {
@@ -364,14 +355,12 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
+          "refId": "A",
           "region": "${region}",
           "statistics": [
             "Sum"
           ]
-        },
-      %{ endfor ~}
-        {}
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
@@ -457,15 +446,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [
-
-      %{ for topic_name in topic_names ~}
         {
-          "alias": "${topic_name}_sum",
+          "alias": "{{TopicName}}",
           "application": {
             "filter": ""
           },
           "dimensions": {
-            "TopicName": "${topic_name}"
+            "TopicName": "$topic"
           },
           "functions": [],
           "group": {
@@ -484,14 +471,12 @@
             "showDisabledItems": false
           },
           "period": "",
-          "refId": "${topic_name}",
+          "refId": "A",
           "region": "${region}",
           "statistics": [
             "Average"
           ]
-        },
-      %{ endfor ~}
-        {}
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
@@ -562,7 +547,36 @@
     "${name_prefix}"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${name_prefix}-${environment}",
+        "definition": "dimension_values(${region},AWS/SNS,NumberOfMessagesPublished,TopicName)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Topic name",
+        "multi": true,
+        "name": "topic",
+        "options": [],
+        "query": "dimension_values(${region},AWS/SQS,,NumberOfMessagesPublished,TopicName)",
+        "refresh": 1,
+        "regex": "${topic_name_filter}",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-24h",

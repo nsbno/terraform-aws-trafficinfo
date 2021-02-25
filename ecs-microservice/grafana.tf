@@ -19,6 +19,7 @@ locals {
     element(split(":", arn), length(split(":", arn))-1)
   ]
   sqs_filter = "/(${join("|", local.sqs_queue_names)})/"
+  topic_name_filter = "/(${join("|", local.sns_topic_names)})/"
 }
 
 resource "grafana_folder" "collection" {
@@ -64,7 +65,7 @@ resource "grafana_dashboard" "sns_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "topic_names" : local.sns_topic_names
+    "topic_name_filter" : local.topic_name_filter
     "region" : "eu-west-1"
     "uuid" : md5("SNS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
