@@ -59,7 +59,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -190,7 +190,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -321,14 +321,14 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
         "dataLinks": []
       },
       "percentage": false,
-      "pointradius": 2,
+      "pointradius": 1,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
@@ -452,7 +452,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -583,7 +583,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -714,7 +714,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -845,7 +845,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
       "options": {
