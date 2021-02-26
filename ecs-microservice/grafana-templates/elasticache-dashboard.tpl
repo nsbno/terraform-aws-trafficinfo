@@ -60,7 +60,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_CacheHits",
               "application": {
                 "filter": ""
               },
@@ -91,7 +91,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_CacheMisses",
               "application": {
                 "filter": ""
               },
@@ -122,7 +122,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_Evictions",
               "application": {
                 "filter": ""
               },
@@ -153,7 +153,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_Reclaimed",
               "application": {
                 "filter": ""
               },
@@ -266,7 +266,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_GetTypeCmds",
               "application": {
                 "filter": ""
               },
@@ -297,7 +297,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_HashBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -328,7 +328,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_HashBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -359,7 +359,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_ListBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -390,7 +390,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_SetBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -421,7 +421,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_SetTypeCmds",
               "application": {
                 "filter": ""
               },
@@ -452,7 +452,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_SortedSetBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -483,7 +483,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_StringBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -600,7 +600,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_NewConnections",
               "application": {
                 "filter": ""
               },
@@ -631,7 +631,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_CurrConnections",
               "application": {
                 "filter": ""
               },
@@ -748,7 +748,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_SaveInProgress",
               "application": {
                 "filter": ""
               },
@@ -779,7 +779,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_CurrItems",
               "application": {
                 "filter": ""
               },
@@ -897,7 +897,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_BytesUsedForCache",
               "application": {
                 "filter": ""
               },
@@ -928,7 +928,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_ReplicationBytes",
               "application": {
                 "filter": ""
               },
@@ -1046,7 +1046,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_HyperLogLogBasedCmds",
               "application": {
                 "filter": ""
               },
@@ -1077,7 +1077,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_ReplicationLag",
               "application": {
                 "filter": ""
               },
@@ -1190,7 +1190,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_CPUUtilization",
               "application": {
                 "filter": ""
               },
@@ -1309,7 +1309,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_NetworkBytesIn",
               "application": {
                 "filter": ""
               },
@@ -1341,7 +1341,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_NetworkBytesOut",
               "application": {
                 "filter": ""
               },
@@ -1460,7 +1460,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_SwapUsage",
               "application": {
                 "filter": ""
               },
@@ -1492,7 +1492,7 @@
               ]
             },
             {
-              "alias": "",
+              "alias": "{{CacheClusterId}}_FreeableMemory",
               "application": {
                 "filter": ""
               },
