@@ -12,24 +12,24 @@ data "aws_region" "current" {}
 locals {
   sns_topic_names = [
     for arn in var.sns_publish_topics :
-    element(split(":", arn), length(split(":", arn))-1)
+    element(split(":", arn), length(split(":", arn)) - 1)
   ]
   sqs_queue_names = [
     for arn in var.sqs_queues :
-    element(split(":", arn), length(split(":", arn))-1)
+    element(split(":", arn), length(split(":", arn)) - 1)
   ]
   s3_read_names = [
     for arn in var.s3_read_buckets :
-          element(split(":", arn), length(split(":", arn))-1)
+    element(split(":", arn), length(split(":", arn)) - 1)
   ]
   s3_write_names = [
     for arn in var.s3_write_buckets :
-      element(split(":", arn), length(split(":", arn))-1)
+    element(split(":", arn), length(split(":", arn)) - 1)
   ]
 
-  sqs_filter = "/(${join("|", local.sqs_queue_names)})/"
-  topic_name_filter = "/(${join("|", local.sns_topic_names)})/"
-  s3_bucket_name_filter ="/(${join("|", concat(local.s3_read_names, local.s3_write_names))})/"
+  sqs_filter            = "/(${join("|", local.sqs_queue_names)})/"
+  topic_name_filter     = "/(${join("|", local.sns_topic_names)})/"
+  s3_bucket_name_filter = "/(${join("|", concat(local.s3_read_names, local.s3_write_names))})/"
 }
 
 resource "grafana_folder" "collection" {
@@ -112,7 +112,7 @@ resource "grafana_dashboard" "s3_dashboard_in_folder" {
 }
 
 resource "grafana_dashboard" "elasticache_dashboard_in_folder" {
-  count  = var.grafana_create_dashboard == true && length(var.use_elasticache) > 0 ? 1 : 0
+  count  = var.grafana_create_dashboard == true && var.use_elasticache == true ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/elasticache-dashboard.tpl", {
     "name" : title("SQS ${var.service_name} ${var.environment}")
@@ -120,7 +120,7 @@ resource "grafana_dashboard" "elasticache_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "cache_name_filter" : aws_elasticache_replication_group.elasticache_replication_group.id
+    "cache_name_filter" : aws_elasticache_replication_group.elasticache_replication_group[0].id
     "region" : "eu-west-1"
     "uuid" : md5("ELASTICACHE ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })

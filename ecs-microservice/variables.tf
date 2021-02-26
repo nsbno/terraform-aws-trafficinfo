@@ -200,7 +200,8 @@ variable "app_client_scopes" {
 
 variable "use_elasticache" {
   description = "Use elasticache for caching in microservice"
-  default     = 0
+  type        = bool
+  default     = false
 }
 
 variable "cache_node_type" {
@@ -239,8 +240,8 @@ variable "service_alarm_memory_treshold" {
 ##############################################
 variable grafana_db_instance_identifier {
   description = "(Optional) Specify db instance identifier to create grafana dashboard."
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "grafana_create_dashboard" {

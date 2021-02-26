@@ -1,11 +1,11 @@
 resource "aws_elasticache_subnet_group" "elasticache_subnet_group" {
-  count      = var.use_elasticache > 0 ? 1 : 0
+  count      = var.use_elasticache == true ? 1 : 0
   name       = "${var.name_prefix}-cache-subnet-${var.service_name}"
   subnet_ids = var.vpc.private_subnet_ids
 }
 
 resource "aws_security_group" "cache_sg" {
-  count  = var.use_elasticache > 0 ? 1 : 0
+  count  = var.use_elasticache == true ? 1 : 0
   name   = "${var.name_prefix}-cache_sg-${var.service_name}"
   vpc_id = var.vpc.vpc_id
   ingress {
@@ -26,7 +26,7 @@ resource "aws_security_group" "cache_sg" {
 
 
 resource "aws_elasticache_replication_group" "elasticache_replication_group" {
-  count                         = var.use_elasticache > 0 ? 1 : 0
+  count                         = var.use_elasticache == true ? 1 : 0
   automatic_failover_enabled    = var.cache_automatic_failover_enabled
   at_rest_encryption_enabled    = true
   transit_encryption_enabled    = true
@@ -44,7 +44,7 @@ resource "aws_elasticache_replication_group" "elasticache_replication_group" {
 }
 
 resource "aws_ssm_parameter" "cache_url" {
-  count     = var.use_elasticache > 0 ? 1 : 0
+  count     = var.use_elasticache == true ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/redis/uri"
   type      = "String"
   value     = "rediss://${aws_elasticache_replication_group.elasticache_replication_group[0].primary_endpoint_address}"
@@ -52,7 +52,7 @@ resource "aws_ssm_parameter" "cache_url" {
 }
 
 resource "aws_ssm_parameter" "cache_ssl" {
-  count     = var.use_elasticache > 0 ? 1 : 0
+  count     = var.use_elasticache == true ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/redis/ssl"
   type      = "String"
   value     = "true"
