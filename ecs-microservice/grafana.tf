@@ -110,3 +110,21 @@ resource "grafana_dashboard" "s3_dashboard_in_folder" {
     "uuid" : md5("S3 ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
 }
+
+resource "grafana_dashboard" "elasticache_dashboard_in_folder" {
+  count  = var.grafana_create_dashboard == true && length(var.use_elasticache) > 0 ? 1 : 0
+  folder = grafana_folder.collection[0].id
+  config_json = templatefile("${path.module}/grafana-templates/elasticache-dashboard.tpl", {
+    "name" : title("SQS ${var.service_name} ${var.environment}")
+    "environment" : var.environment
+    "name_prefix" : var.name_prefix
+    "application" : var.service_name
+    "service_name" : var.service_name
+    "cache_name_filter" : aws_elasticache_replication_group.elasticache_replication_group.id
+    "region" : "eu-west-1"
+    "uuid" : md5("ELASTICACHE ${var.name_prefix} > ${var.service_name} > ${var.environment}")
+  })
+  depends_on = [
+    aws_elasticache_replication_group.elasticache_replication_group
+  ]
+}

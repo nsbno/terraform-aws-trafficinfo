@@ -31,7 +31,7 @@ resource "aws_elasticache_replication_group" "elasticache_replication_group" {
   at_rest_encryption_enabled    = true
   transit_encryption_enabled    = true
   replication_group_id          = "rg-${var.service_name}"
-  replication_group_description = "Relication group for elasticache"
+  replication_group_description = "Replication group for ElastiCache"
   engine                        = "redis"
   node_type                     = var.cache_node_type
   number_cache_clusters         = var.cache_number_cache_clusters
