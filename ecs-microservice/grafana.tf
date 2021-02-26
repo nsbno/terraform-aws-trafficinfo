@@ -120,7 +120,7 @@ resource "grafana_dashboard" "elasticache_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "cache_name_filter" : aws_elasticache_replication_group.elasticache_replication_group[0].id
+    "cache_name_filter" : "/(${aws_elasticache_replication_group.elasticache_replication_group[0].id})/"
     "region" : "eu-west-1"
     "uuid" : md5("ELASTICACHE ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
