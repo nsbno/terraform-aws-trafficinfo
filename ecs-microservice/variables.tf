@@ -288,3 +288,8 @@ variable "cognito_use_central" {
   type        = bool
   default     = false
 }
+variable "api_gateway_enable_xray" {
+  description = "Used to enable xray traicng in api gateway, default false"
+  type        = bool
+  default     = false
+}
