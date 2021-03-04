@@ -265,29 +265,35 @@ variable "grafana_create_dashboard" {
 # Configure Delegated Cognito config generation.
 #
 ##############################################
-variable "cognito_bucket" {
+variable "cognito_central_bucket" {
   description = "(Optional) Configure where to upload delegated cognito config. Default is vydev-delegated-cognito-staging."
   type        = string
   default     = "vydev-delegated-cognito-staging"
 }
 
-variable "cognito_env" {
+variable "cognito_central_env" {
   description = "(Optional) Override which env to upload to for delegated cognito, default is the \"envirnment\"-variable."
   type        = string
   default     = ""
 }
 
-variable "cognito_account_id" {
+variable "cognito_central_account_id" {
   description = "(Optional) Set cognito account id from where to read the Client ID and Client Secret from."
   type        = string
   default     = ""
 }
 
-variable "cognito_use_central" {
+variable "cognito_central_enable" {
   description = "(Optional) Use the Central Cognito instance. Default is False."
   type        = bool
   default     = false
 }
+
+#
+##############################################
+# Toggle X-Ray tracing for microservice in API-Gateway
+#
+##############################################
 variable "api_gateway_enable_xray" {
   description = "Used to enable xray traicng in api gateway, default false"
   type        = bool
