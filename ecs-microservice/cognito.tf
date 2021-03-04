@@ -54,7 +54,7 @@ resource "aws_cognito_user_pool_client" "app_client" {
 # SSM Parameters to configure the cognito clientid for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-clientid" {
-  count = (var.cognito_use_central==false && var.create_app_client > 0) ? 1 : 0
+  count = (var.cognito_central_enable==false && var.create_app_client > 0) ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/cognito/clientId"
   type      = "String"
   value     = aws_cognito_user_pool_client.app_client[0].id
@@ -64,7 +64,7 @@ resource "aws_ssm_parameter" "cognito-clientid" {
 # SSM Parameters to configure the cognito clientsecret for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-clientsecret" {
-  count = (var.cognito_use_central==false && var.create_app_client > 0) ? 1 : 0
+  count = (var.cognito_central_enable==false && var.create_app_client > 0) ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/cognito/clientSecret"
   type      = "String"
   value     = aws_cognito_user_pool_client.app_client[0].client_secret
@@ -74,7 +74,7 @@ resource "aws_ssm_parameter" "cognito-clientsecret" {
 # SSM Parameters to configure the cognito endpoint url for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-url" {
-  count = (var.cognito_use_central==false && var.create_app_client > 0) ? 1 : 0
+  count = (var.cognito_central_enable==false && var.create_app_client > 0) ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
   type  = "String"
   value = "https://auth.${var.hosted_zone_name}"
@@ -93,9 +93,9 @@ resource "aws_ssm_parameter" "cognito-url" {
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
-  count =  length(var.cognito_bucket) > 0 ? 1 : 0
-  bucket = var.cognito_bucket
-  key    = "${length(var.cognito_env)>0 ? var.cognito_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
+  count =  length(var.cognito_central_bucket) > 0 ? 1 : 0
+  bucket = var.cognito_central_bucket
+  key    = "${length(var.cognito_central_env)>0 ? var.cognito_central_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
   ## TODO maybe pull this out to a template to do more advanced conditional logic.
