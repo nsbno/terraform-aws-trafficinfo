@@ -203,7 +203,7 @@ resource "aws_ssm_parameter" "central_cognito_url" {
 # for how this is configured for each microservice.
 resource "aws_ssm_parameter" "central_cognito_jwks_url" {
   count = var.cognito_central_enable ? 1 : 0
-  name  = "/${var.name_prefix}/config/${var.service_name}/jwksUrl"
+  name  = "/${var.name_prefix}/config/${var.service_name}/jwks.url"
   type  = "String"
 
   # store the hash as a tag to establish a dependency to the wait_for_credentials resource
