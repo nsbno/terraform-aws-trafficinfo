@@ -115,7 +115,7 @@ resource "grafana_dashboard" "elasticache_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && var.use_elasticache == true ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/elasticache-dashboard.tpl", {
-    "name" : title("SQS ${var.service_name} ${var.environment}")
+    "name" : title("Elasticache ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
