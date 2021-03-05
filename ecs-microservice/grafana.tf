@@ -27,7 +27,7 @@ locals {
     element(split(":", arn), length(split(":", arn)) - 1)
   ]
 
-  sqs_filter            = "/(${join("|", local.sqs_queue_names)})/"
+  sqs_queue_name_filter            = "/(${join("|", local.sqs_queue_names)})/"
   topic_name_filter     = "/(${join("|", local.sns_topic_names)})/"
   s3_bucket_name_filter = "/(${join("|", concat(local.s3_read_names, local.s3_write_names))})/"
 }
@@ -90,7 +90,7 @@ resource "grafana_dashboard" "sqs_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "queue_name_filter" : local.sqs_filter
+    "queue_name_filter" : local.sqs_queue_name_filter
     "region" : "eu-west-1"
     "uuid" : md5("SQS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
