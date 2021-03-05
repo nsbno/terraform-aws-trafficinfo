@@ -27,7 +27,7 @@ locals {
     element(split(":", arn), length(split(":", arn)) - 1)
   ]
 
-  sqs_queue_name_filter            = "/(${join("|", local.sqs_queue_names)})/"
+  sqs_queue_name_filter = "/(${join("|", local.sqs_queue_names)})/"
   topic_name_filter     = "/(${join("|", local.sns_topic_names)})/"
   s3_bucket_name_filter = "/(${join("|", concat(local.s3_read_names, local.s3_write_names))})/"
 }
