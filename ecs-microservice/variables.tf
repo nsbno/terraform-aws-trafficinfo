@@ -283,6 +283,12 @@ variable "cognito_central_account_id" {
   default     = ""
 }
 
+variable "cognito_central_user_pool_id" {
+  description = "(Optional) The ID of the User Pool in central cognito to create resource server and app client in."
+  type        = string
+  default     = ""
+}
+
 variable "cognito_central_enable" {
   description = "(Optional) Use the Central Cognito instance. Default is False."
   type        = bool
@@ -295,7 +301,7 @@ variable "cognito_central_enable" {
 #
 ##############################################
 variable "api_gateway_enable_xray" {
-  description = "Used to enable xray traicng in api gateway, default false"
+  description = "Used to enable xray tracing in api gateway, default false"
   type        = bool
   default     = false
 }
