@@ -263,8 +263,16 @@ variable "grafana_create_dashboard" {
 
 ##############################################
 # Configure Delegated Cognito config generation.
+# When enabling the most of the other cognito_central should be
+# set with correct values for the ecs-microservice to do its thing.
 #
 ##############################################
+variable "cognito_central_enable" {
+  description = "(Optional) Use the Central Cognito instance. Default is False."
+  type        = bool
+  default     = false
+}
+
 variable "cognito_central_bucket" {
   description = "(Optional) Configure where to upload delegated cognito config. Default is vydev-delegated-cognito-staging."
   type        = string
@@ -287,12 +295,6 @@ variable "cognito_central_user_pool_id" {
   description = "(Optional) The ID of the User Pool in central cognito to create resource server and app client in."
   type        = string
   default     = ""
-}
-
-variable "cognito_central_enable" {
-  description = "(Optional) Use the Central Cognito instance. Default is False."
-  type        = bool
-  default     = false
 }
 
 #
