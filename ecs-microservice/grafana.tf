@@ -100,7 +100,7 @@ resource "grafana_dashboard" "s3_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && length(local.s3_bucket_name_filter) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/s3-dashboard.tpl", {
-    "name" : title("SQS ${var.service_name} ${var.environment}")
+    "name" : title("S3 ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
