@@ -29,7 +29,7 @@ locals {
 
   sqs_queue_name_filter = "/(${join("|", local.sqs_queue_names)})/"
   topic_name_filter     = "/(${join("|", local.sns_topic_names)})/"
-  s3_bucket_name_filter = "/(${join("|", concat(local.s3_read_names, local.s3_write_names))})/"
+  s3_bucket_names = concat(local.s3_read_names, local.s3_write_names)
 }
 
 resource "grafana_folder" "collection" {
@@ -97,7 +97,7 @@ resource "grafana_dashboard" "sqs_dashboard_in_folder" {
 }
 
 resource "grafana_dashboard" "s3_dashboard_in_folder" {
-  count  = var.grafana_create_dashboard == true && length(local.s3_bucket_name_filter) > 0 ? 1 : 0
+  count  = var.grafana_create_dashboard == true && length(local.s3_bucket_names) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/s3-dashboard.tpl", {
     "name" : title("S3 ${var.service_name} ${var.environment}")
@@ -105,7 +105,7 @@ resource "grafana_dashboard" "s3_dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "s3_bucket_name_filter" : local.s3_bucket_name_filter
+    "s3_bucket_name_filter" : "/(${join("|", local.s3_bucket_names)})/"
     "region" : "eu-west-1"
     "uuid" : md5("S3 ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
