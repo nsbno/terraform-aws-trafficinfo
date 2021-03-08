@@ -608,7 +608,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "AWS SNS",
+  "title": "${name}",
   "uid": "${uuid}",
   "version": 1
 }

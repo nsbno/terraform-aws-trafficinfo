@@ -1,6 +1,6 @@
 {
   "id": null,
-  "title": "AWS ElastiCache Redis",
+  "title": "${name}",
   "description": "Visualize AWS ElastiCache Redis metrics",
   "tags": [
     "terraform",
