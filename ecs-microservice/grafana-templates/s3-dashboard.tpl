@@ -336,7 +336,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "AWS S3",
+  "title": "${name}",
   "uid": "${uuid}",
   "version": 1
 }

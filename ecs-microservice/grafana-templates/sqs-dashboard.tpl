@@ -1270,7 +1270,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "AWS SQS",
+  "title": "${name}",
   "uid": "${uuid}",
   "version": 1
 }
