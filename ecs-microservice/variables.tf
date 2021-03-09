@@ -145,6 +145,7 @@ variable "lambda_elasticcloud" {
 variable "enable_elasticcloud" {
   description = "set to true to enable elastic cloud for this microservice"
   default     = false
+  type        = bool
 }
 
 # Our own Trafficinfo Cognito instance.
@@ -166,7 +167,8 @@ variable "hosted_zone_name" {
 # authorized can use when requesting the service.
 variable "create_resource_server" {
   description = "Create resource server in Cognito for microservice."
-  default     = 0
+  default     = false
+  type        = bool
 }
 
 variable "cognito_resource_server_identifier_base" {
@@ -188,7 +190,8 @@ variable "resource_server_scopes" {
 # to other services.
 variable "create_app_client" {
   description = "Create application client in Cognito for microservice."
-  default     = 0
+  default     = false
+  type        = bool
 }
 
 # What scopes the client should have access to.
@@ -211,6 +214,7 @@ variable "cache_node_type" {
 variable "cache_automatic_failover_enabled" {
   description = "cache automatic failover enabled"
   default     = false
+  type        = bool
 }
 
 variable "cache_number_cache_clusters" {
