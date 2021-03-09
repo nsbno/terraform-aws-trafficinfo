@@ -203,7 +203,8 @@ variable "app_client_scopes" {
 
 variable "use_elasticache" {
   description = "Use elasticache for caching in microservice"
-  default     = 0
+  type        = bool
+  default     = false
 }
 
 variable "cache_node_type" {
@@ -241,20 +242,8 @@ variable "service_alarm_memory_treshold" {
 # Configure Grafana Dashboard generation.
 #
 ##############################################
-variable "grafana_folder_name" {
-  description = "(Optional) Override the name of the Grafana Folder to put Dashboard in."
-  type        = string
-  default     = ""
-}
-
-variable "grafana_use_existing_folder" {
-  description = "(Optional) ID to an existing folder in Grafana to be used instead of creating a new one."
-  type        = number
-  default     = -1
-}
-
-variable "grafana_template_file" {
-  description = "(Optional) Path to template for dashboard to provide a custom dashboard template."
+variable grafana_db_instance_identifier {
+  description = "(Optional) Specify db instance identifier to create grafana dashboard."
   type        = string
   default     = ""
 }
