@@ -9,6 +9,7 @@
 # - access to sqs queues
 # - access to dynamodb tables
 # - access to sns topics
+# - central cognito resource server, scopes and application client.
 #
 ##########################################################################
 module "ecs_fargate_microservice" {

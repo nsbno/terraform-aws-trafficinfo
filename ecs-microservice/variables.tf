@@ -145,6 +145,7 @@ variable "lambda_elasticcloud" {
 variable "enable_elasticcloud" {
   description = "set to true to enable elastic cloud for this microservice"
   default     = false
+  type        = bool
 }
 
 # Our own Trafficinfo Cognito instance.
@@ -166,7 +167,8 @@ variable "hosted_zone_name" {
 # authorized can use when requesting the service.
 variable "create_resource_server" {
   description = "Create resource server in Cognito for microservice."
-  default     = 0
+  default     = false
+  type        = bool
 }
 
 variable "cognito_resource_server_identifier_base" {
@@ -188,7 +190,8 @@ variable "resource_server_scopes" {
 # to other services.
 variable "create_app_client" {
   description = "Create application client in Cognito for microservice."
-  default     = 0
+  default     = false
+  type        = bool
 }
 
 # What scopes the client should have access to.
@@ -212,6 +215,7 @@ variable "cache_node_type" {
 variable "cache_automatic_failover_enabled" {
   description = "cache automatic failover enabled"
   default     = false
+  type        = bool
 }
 
 variable "cache_number_cache_clusters" {
@@ -250,6 +254,47 @@ variable "grafana_create_dashboard" {
   default     = false
 }
 
+##############################################
+# Configure Delegated Cognito config generation.
+# When enabling the most of the other cognito_central should be
+# set with correct values for the ecs-microservice to do its thing.
+#
+##############################################
+variable "cognito_central_enable" {
+  description = "(Optional) Use the Central Cognito instance. Default is False."
+  type        = bool
+  default     = false
+}
+
+variable "cognito_central_bucket" {
+  description = "(Optional) Configure where to upload delegated cognito config. Default is vydev-delegated-cognito-staging."
+  type        = string
+  default     = "vydev-delegated-cognito-staging"
+}
+
+variable "cognito_central_env" {
+  description = "(Optional) Override which env to upload to for delegated cognito, default is the \"envirnment\"-variable."
+  type        = string
+  default     = ""
+}
+
+variable "cognito_central_account_id" {
+  description = "(Optional) Set cognito account id from where to read the Client ID and Client Secret from."
+  type        = string
+  default     = ""
+}
+
+variable "cognito_central_user_pool_id" {
+  description = "(Optional) The ID of the User Pool in central cognito to create resource server and app client in."
+  type        = string
+  default     = ""
+}
+
+#
+##############################################
+# Toggle X-Ray tracing for microservice in API-Gateway
+#
+##############################################
 variable "api_gateway_enable_xray" {
   description = "Used to enable xray tracing in api gateway, default false"
   type        = bool
