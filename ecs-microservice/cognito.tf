@@ -212,6 +212,6 @@ resource "aws_ssm_parameter" "central_cognito_jwks_url" {
   })
 
   # Use default environment, or overridden cognito environment.
-  value = "https://cognito-idp.${local.current_region}.amazonaws.com/${var.user_pool_id}/.well-known/jwks.json"
+  value = "https://cognito-idp.${local.current_region}.amazonaws.com/${var.cognito_central_user_pool_id}/.well-known/jwks.json"
   overwrite = true
 }
