@@ -43,7 +43,7 @@ resource "aws_cognito_resource_server" "resource_server" {
   user_pool_id = var.user_pool_id
 }
 
-module "api-gateway-sqs-roles-duty-change" {
+module "api-gateway-sqs-roles" {
   source       = "../api-gateway-sqs-roles"
   name_prefix  = var.name_prefix
   service_name = var.service_name
