@@ -90,6 +90,32 @@ resource "aws_ssm_parameter" "cognito-url" {
 # For example traffic-control, traffic-gui and info.
 ###########################################################
 
+locals {
+  central_cognito_resource_server = {
+    name_prefix = "${var.name_prefix}-${var.service_name}"
+    identifier = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
+
+    scopes = [for key, value in var.resource_server_scopes : {
+      scope_name = value.scope_name
+      scope_description = value.scope_description
+    }]
+  }
+
+  central_cognito_user_pool_client = {
+    name_prefix = "${var.name_prefix}-${var.service_name}"
+    generate_secret = true
+
+    allowed_oauth_flows = [ "client_credentials" ]
+    allowed_oauth_scopes = var.app_client_scopes
+    allowed_oauth_flows_user_pool_client = true
+  }
+
+  # build json config content for central cognito.
+  central_congito_config_content = jsonencode(merge({},
+    var.create_resource_server ? local.central_cognito_resource_server : {},
+    var.create_app_client ? local.central_cognito_user_pool_client : {} ))
+}
+
 # upload delegated cognito config to S3 bucket.
 # this will trigger the delegated cognito terraform pipeline and and apply the config.
 resource "aws_s3_bucket_object" "delegated-cognito-config" {
@@ -98,30 +124,7 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
   key    = "${length(var.cognito_central_env)>0 ? var.cognito_central_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
-  ## TODO maybe pull this out to a template to do more advanced conditional logic.
-  content = jsonencode({
-    # Configure resource server.
-    resource_server = {
-      name_prefix = "${var.name_prefix}-${var.service_name}"
-      identifier  = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
-
-      scopes = [for key, value in var.resource_server_scopes : {
-        scope_name        = value.scope_name
-        scope_description = value.scope_description
-      }]
-    }
-
-    # Configure a user pool client
-    # TODO. this should be conditionally toggled by checking create_app_client.
-    user_pool_client = {
-      name_prefix     = "${var.name_prefix}-${var.service_name}"
-      generate_secret = true
-
-      allowed_oauth_flows                  = ["client_credentials"]
-      allowed_oauth_scopes                 = var.app_client_scopes
-      allowed_oauth_flows_user_pool_client = true
-    }
-  })
+  content = local.central_congito_config_content
   content_type = "application/json"
 }
 
