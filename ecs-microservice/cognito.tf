@@ -91,7 +91,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 ###########################################################
 
 locals {
-  central_cognito_resource_server = {
+  central_cognito_resource_server = var.create_resource_server ? {
     name_prefix = "${var.name_prefix}-${var.service_name}"
     identifier = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
 
@@ -99,21 +99,20 @@ locals {
       scope_name = value.scope_name
       scope_description = value.scope_description
     }]
-  }
+  }: {}
 
-  central_cognito_user_pool_client = {
+  central_cognito_user_pool_client = var.create_app_client ? {
     name_prefix = "${var.name_prefix}-${var.service_name}"
     generate_secret = true
 
     allowed_oauth_flows = [ "client_credentials" ]
     allowed_oauth_scopes = var.app_client_scopes
     allowed_oauth_flows_user_pool_client = true
-  }
+  } : {}
 
   # build json config content for central cognito.
-  central_congito_config_content = jsonencode(merge({},
-    var.create_resource_server ? local.central_cognito_resource_server : {},
-    var.create_app_client ? local.central_cognito_user_pool_client : {} ))
+  central_congito_config_content = jsonencode(
+    merge(local.central_cognito_resource_server, local.central_cognito_user_pool_client))
 }
 
 # upload delegated cognito config to S3 bucket.
