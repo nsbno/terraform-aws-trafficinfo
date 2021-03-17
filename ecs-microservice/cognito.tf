@@ -115,7 +115,7 @@ locals {
   } : tomap()
 
   # build json config content for central cognito.
-  central_congito_config_content = jsonencode(
+  central_congito_config_content_json = jsonencode(
     merge(local.central_cognito_resource_server, local.central_cognito_user_pool_client))
 }
 
@@ -127,7 +127,7 @@ resource "aws_s3_bucket_object" "delegated-cognito-config" {
   key    = "${length(var.cognito_central_env)>0 ? var.cognito_central_env : var.environment}/${local.current_account_id}/${var.name_prefix}-${var.service_name}.json"
   acl    = "bucket-owner-full-control"
 
-  content = local.central_congito_config_content
+  content = local.central_congito_config_content_json
   content_type = "application/json"
 }
 
