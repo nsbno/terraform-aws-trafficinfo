@@ -99,7 +99,7 @@ locals {
       scope_name = value.scope_name
       scope_description = value.scope_description
     }]
-  }: {}
+  }: tomap()
 
   central_cognito_user_pool_client = var.create_app_client ? {
     name_prefix = "${var.name_prefix}-${var.service_name}"
@@ -108,7 +108,7 @@ locals {
     allowed_oauth_flows = [ "client_credentials" ]
     allowed_oauth_scopes = var.app_client_scopes
     allowed_oauth_flows_user_pool_client = true
-  } : {}
+  } : tomap()
 
   # build json config content for central cognito.
   central_congito_config_content = jsonencode(
