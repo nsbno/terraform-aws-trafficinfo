@@ -92,22 +92,26 @@ resource "aws_ssm_parameter" "cognito-url" {
 
 locals {
   central_cognito_resource_server = var.create_resource_server ? {
-    name_prefix = "${var.name_prefix}-${var.service_name}"
-    identifier = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
+    resource_server = {
+      name_prefix = "${var.name_prefix}-${var.service_name}"
+      identifier = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
 
-    scopes = [for key, value in var.resource_server_scopes : {
-      scope_name = value.scope_name
-      scope_description = value.scope_description
-    }]
+      scopes = [for key, value in var.resource_server_scopes : {
+        scope_name = value.scope_name
+        scope_description = value.scope_description
+      }]
+    }
   }: tomap()
 
   central_cognito_user_pool_client = var.create_app_client ? {
-    name_prefix = "${var.name_prefix}-${var.service_name}"
-    generate_secret = true
+    user_pool_client = {
+      name_prefix = "${var.name_prefix}-${var.service_name}"
+      generate_secret = true
 
-    allowed_oauth_flows = [ "client_credentials" ]
-    allowed_oauth_scopes = var.app_client_scopes
-    allowed_oauth_flows_user_pool_client = true
+      allowed_oauth_flows = [ "client_credentials" ]
+      allowed_oauth_scopes = var.app_client_scopes
+      allowed_oauth_flows_user_pool_client = true
+    }
   } : tomap()
 
   # build json config content for central cognito.
