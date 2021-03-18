@@ -108,7 +108,8 @@ locals {
       name_prefix = "${var.name_prefix}-${var.service_name}"
       generate_secret = true
 
-      allowed_oauth_flows = [ "client_credentials" ]
+      explicit_auth_flows = ["ADMIN_NO_SRP_AUTH"]
+      allowed_oauth_flows = ["client_credentials"]
       allowed_oauth_scopes = var.app_client_scopes
       allowed_oauth_flows_user_pool_client = true
     }
