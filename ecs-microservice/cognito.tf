@@ -91,7 +91,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 ###########################################################
 
 locals {
-  central_cognito_resource_server = var.create_resource_server ? jsonencode({
+  central_cognito_resource_server = try(var.create_resource_server ?{
     resource_server = {
       name_prefix = "${var.name_prefix}-${var.service_name}"
       identifier = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
@@ -101,9 +101,9 @@ locals {
         scope_description = value.scope_description
       }]
     }
-  }): jsonencode({})
+  } : tomap(false), {})
 
-  central_cognito_user_pool_client = var.create_app_client ? jsonencode({
+  central_cognito_user_pool_client = try(var.create_app_client ? {
     user_pool_client = {
       name_prefix = "${var.name_prefix}-${var.service_name}"
       generate_secret = true
@@ -113,7 +113,7 @@ locals {
       allowed_oauth_scopes = var.app_client_scopes
       allowed_oauth_flows_user_pool_client = true
     }
-  }) : jsonencode({})
+  }  : tomap(false), {})
 
   # build json config content for central cognito.
   central_congito_config_content_json = jsonencode(
