@@ -101,7 +101,7 @@ locals {
         scope_description = value.scope_description
       }]
     }
-  }: {}
+  }: { central_cognito_resource_server = {} }
 
   central_cognito_user_pool_client = var.create_app_client ? {
     user_pool_client = {
@@ -113,7 +113,7 @@ locals {
       allowed_oauth_scopes = var.app_client_scopes
       allowed_oauth_flows_user_pool_client = true
     }
-  } : { }
+  } : { user_pool_client = {} }
 
   # build json config content for central cognito.
   central_congito_config_content_json = jsonencode(
