@@ -61,3 +61,9 @@ variable "service_alarm_error_response_treshold" {
   description = "threshold for number of error responses"
   default     = 50
 }
+
+variable "api_gateway_enable_xray" {
+  description = "Used to enable xray tracing in api gateway, default false"
+  type        = bool
+  default     = false
+}
