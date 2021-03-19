@@ -91,6 +91,13 @@ resource "aws_ssm_parameter" "cognito-url" {
 ###########################################################
 
 locals {
+  # TODO
+  # the code is surrounded with "try" as a workaround for
+  # terraform not handling the conditional objects returned
+  # with different number of attributes, this issue has
+  # been resolved in later versions of tf 0.14.x and
+  # the workaround can be removed when this module no longer
+  # needs to be backward compatible with versions of tf below 0.14.x
   central_cognito_resource_server = try(var.create_resource_server ?{
     resource_server = {
       name_prefix = "${var.name_prefix}-${var.service_name}"
@@ -103,6 +110,7 @@ locals {
     }
   } : tomap(false), {})
 
+  # TODO same as above.
   central_cognito_user_pool_client = try(var.create_app_client ? {
     user_pool_client = {
       name_prefix = "${var.name_prefix}-${var.service_name}"
