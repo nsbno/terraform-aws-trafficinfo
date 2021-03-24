@@ -91,6 +91,8 @@ resource "aws_ssm_parameter" "cognito-url" {
 ###########################################################
 
 locals {
+  cognito_central_resource_server_identifier_base = length(var.cognito_central_resource_server_identifier_base)>0 ? var.cognito_central_resource_server_identifier_base : var.cognito_resource_server_identifier_base
+
   # TODO
   # the code is surrounded with "try" as a workaround for
   # terraform not handling the conditional objects returned
@@ -101,7 +103,7 @@ locals {
   central_cognito_resource_server = try(var.create_resource_server ?{
     resource_server = {
       name_prefix = "${var.name_prefix}-${var.service_name}"
-      identifier = "${var.cognito_resource_server_identifier_base}/${var.service_name}"
+      identifier = "${local.cognito_central_resource_server_identifier_base}/${var.service_name}"
 
       scopes = [for key, value in var.resource_server_scopes : {
         scope_name = value.scope_name
@@ -166,7 +168,6 @@ data "aws_secretsmanager_secret_version" "microservice_client_credentials" {
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
-# TODO probably find a more suitable name/location for the parameter.
 resource "aws_ssm_parameter" "central_client_id" {
   count = (var.cognito_central_enable && var.create_app_client) ? 1 : 0
   name      =  "/${var.name_prefix}/config/${var.service_name}/cognito.clientId"
@@ -181,7 +182,6 @@ resource "aws_ssm_parameter" "central_client_id" {
 }
 
 # Store client credentials from Central Cognito in SSM so that the microservice can read it.
-# TODO probably find a more suitable name/location for the parameter.
 resource "aws_ssm_parameter" "central_client_secret" {
   count = (var.cognito_central_enable && var.create_app_client) ? 1 : 0
   name      =  "/${var.name_prefix}/config/${var.service_name}/cognito.clientSecret"
