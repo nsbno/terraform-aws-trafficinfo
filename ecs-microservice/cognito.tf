@@ -91,7 +91,7 @@ resource "aws_ssm_parameter" "cognito-url" {
 ###########################################################
 
 locals {
-  cognito_central_resource_server_identifier_base = length(var.cognito_central_resource_server_identifier_base)>0 ? var.cognito_central_resource_server_identifier_base : var.cognito_resource_server_identifier_base
+  cognito_central_resource_server_identifier = length(var.cognito_central_resource_server_identifier)>0 ? var.cognito_central_resource_server_identifier : var.cognito_resource_server_identifier_base
 
   # TODO
   # the code is surrounded with "try" as a workaround for
@@ -103,7 +103,7 @@ locals {
   central_cognito_resource_server = try(var.create_resource_server ?{
     resource_server = {
       name_prefix = "${var.name_prefix}-${var.service_name}"
-      identifier = "${local.cognito_central_resource_server_identifier_base}/${var.service_name}"
+      identifier = "${local.cognito_central_resource_server_identifier}/${var.service_name}"
 
       scopes = [for key, value in var.resource_server_scopes : {
         scope_name = value.scope_name
