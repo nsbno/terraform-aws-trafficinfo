@@ -290,6 +290,12 @@ variable "cognito_central_user_pool_id" {
   default     = ""
 }
 
+variable "cognito_central_resource_server_identifier" {
+  description = "(Optional) Override the base identifier used by resource servers created by esc-microservice module in the central cognito."
+  type        = string
+  default     = ""
+}
+
 #
 ##############################################
 # Toggle X-Ray tracing for microservice in API-Gateway
