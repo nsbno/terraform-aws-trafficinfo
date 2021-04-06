@@ -137,6 +137,11 @@ variable "s3_write_buckets" {
   default = []
 }
 
+variable "s3_delete_buckets" {
+  type = list(string)
+  default = []
+}
+
 variable "lambda_elasticcloud" {
   description = "Lambda for sending logs to elastic cloud"
   default     = ""

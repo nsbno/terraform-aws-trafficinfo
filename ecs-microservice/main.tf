@@ -273,6 +273,26 @@ data "aws_iam_policy_document" "write_s3_bucket" {
   }
 }
 
+resource "aws_iam_role_policy" "delete-s3-bucket-from-microservice" {
+  for_each = length(var.s3_delete_buckets) > 0 ? { 1 : "dummy" } : {}
+  name     = "${var.name_prefix}-delete_bucket-from-microservice"
+
+  policy = data.aws_iam_policy_document.delete_s3_bucket.json
+  role   = module.ecs_fargate_microservice.task_role_name
+}
+
+data "aws_iam_policy_document" "delete_s3_bucket" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "s3:DeleteObject",
+    ]
+
+    resources = concat(var.s3_delete_buckets, formatlist("%s/*", var.s3_delete_buckets))
+  }
+}
+
 data "aws_iam_policy_document" "read_encryption_key" {
   statement {
     effect = "Allow"
