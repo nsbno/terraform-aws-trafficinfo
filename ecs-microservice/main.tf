@@ -136,6 +136,10 @@ resource "aws_api_gateway_deployment" "api_gateway_microservice_rest_api_deploym
   lifecycle {
     create_before_destroy = true
   }
+
+  triggers = {
+    redeployment = sha256(var.schema)
+  }
 }
 
 resource "aws_api_gateway_stage" "api_gateway_microservice_stage_v1" {
