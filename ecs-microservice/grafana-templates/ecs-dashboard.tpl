@@ -39,7 +39,7 @@
           "fieldConfig": {
             "defaults": {
               "custom": {}
-            },
+            },f
             "overrides": []
           },
           "gridPos": {
@@ -127,7 +127,7 @@
 			"steppedLine": false,
 			"targets": [{
 				"dimensions": {
-					"ClusterName": "${name_prefix}-ecs-cluster",
+					"ClusterName": "${ecs_cluster}",
 					"ServiceName": "${name_prefix}-${service_name}"
 				},
 				"metricName": "CPUUtilization",
@@ -143,7 +143,7 @@
 			"timeFrom": null,
 			"timeRegions": [],
 			"timeShift": null,
-			"title": "CPUUtilization (cluster ${name_prefix}-ecs-cluster, service ${name_prefix}-${service_name})",
+			"title": "CPUUtilization (cluster ${ecs_cluster}, service ${name_prefix}-${service_name})",
 			"tooltip": {
 				"msResolution": true,
 				"shared": true,
@@ -215,7 +215,7 @@
           "targets": [
             {
               "dimensions": {
-                "ClusterName": "${name_prefix}-ecs-cluster",
+                "ClusterName": "${ecs_cluster}",
                 "ServiceName": "${name_prefix}-${service_name}"
               },
               "metricName": "MemoryUtilization",
@@ -230,7 +230,7 @@
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "MemoryUtilization (cluster ${name_prefix}-ecs-cluster, service ${name_prefix}-${service_name})",
+          "title": "MemoryUtilization (cluster ${ecs_cluster}, service ${name_prefix}-${service_name})",
           "tooltip": {
             "msResolution": true,
             "shared": true,
