@@ -138,7 +138,7 @@ variable "s3_write_buckets" {
 }
 
 variable "s3_delete_buckets" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
