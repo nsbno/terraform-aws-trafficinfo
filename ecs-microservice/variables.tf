@@ -271,6 +271,12 @@ variable "cognito_central_enable" {
   default     = false
 }
 
+variable "cognito_local_enable" {
+  description = "(Optional) Use the Local Cognito instance. Default is True."
+  type        = bool
+  default     = true
+}
+
 variable "cognito_central_bucket" {
   description = "(Optional) Configure where to upload delegated cognito config. Default is vydev-delegated-cognito-staging."
   type        = string
