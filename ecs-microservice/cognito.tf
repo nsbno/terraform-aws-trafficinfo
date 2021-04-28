@@ -220,11 +220,7 @@ resource "aws_ssm_parameter" "central_cognito_jwks_url" {
   count = var.cognito_central_enable ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/jwksUrl"
   type  = "String"
-
-  # store the hash as a tag to establish a dependency to the wait_for_credentials resource
-  tags      = merge(var.tags, {
-    config_hash: time_sleep.wait_for_credentials[0].triggers.config_hash
-  })
+  tags      = var.tags
 
   # Use default environment, or overridden cognito environment.
   value = "https://cognito-idp.${local.current_region}.amazonaws.com/${var.cognito_central_user_pool_id}/.well-known/jwks.json"
