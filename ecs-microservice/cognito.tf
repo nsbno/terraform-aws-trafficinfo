@@ -217,7 +217,7 @@ resource "aws_ssm_parameter" "central_cognito_url" {
 # See the configuration of the jwt token verification in the microservice application-cloud.yml
 # for how this is configured for each microservice.
 resource "aws_ssm_parameter" "central_cognito_jwks_url" {
-  count = (var.cognito_central_enable && var.create_app_client) ? 1 : 0
+  count = var.cognito_central_enable ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/jwksUrl"
   type  = "String"
 
