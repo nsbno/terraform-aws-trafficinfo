@@ -34,7 +34,6 @@ locals {
   sqs_queue_name_filter = "/(${join("|", local.sqs_queue_names)})/"
   topic_name_filter     = "/(${join("|", local.sns_topic_names)})/"
   s3_bucket_names       = concat(local.s3_read_names, local.s3_write_names)
-  ecs_cluster_name      = var.ecs_cluster.name
 }
 
 resource "grafana_folder" "collection" {
@@ -51,7 +50,7 @@ resource "grafana_dashboard" "dashboard_in_folder" {
     "name_prefix" : var.name_prefix
     "application" : var.service_name
     "service_name" : var.service_name
-    "esc_cluster" : local.ecs_cluster_name
+    "esc_cluster" : var.ecs_cluster.name
     "region" : "eu-west-1"
     "uuid" : md5("ECS ${var.name_prefix} > ${var.service_name} > ${var.environment}")
   })
