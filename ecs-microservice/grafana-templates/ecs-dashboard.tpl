@@ -39,7 +39,7 @@
           "fieldConfig": {
             "defaults": {
               "custom": {}
-            },f
+            },
             "overrides": []
           },
           "gridPos": {
