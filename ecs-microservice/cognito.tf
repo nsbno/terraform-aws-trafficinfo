@@ -17,7 +17,7 @@ locals {
 
 # create a resource server for the microservice
 resource "aws_cognito_resource_server" "resource_server" {
-  count      = var.create_resource_server ? 1 : 0
+  count      = (var.cognito_local_enable && var.create_resource_server) ? 1 : 0
   identifier = "${var.cognito_resource_server_identifier_base}/${var.base_path}"
   name       = "${var.name_prefix}-${var.service_name}"
 
@@ -40,7 +40,7 @@ resource "aws_cognito_resource_server" "resource_server" {
 # that the microservice can authenticate to cognito and request
 # an access_token to use for calling other microservices.
 resource "aws_cognito_user_pool_client" "app_client" {
-  count                                = var.create_app_client ? 1 : 0
+  count                                = (var.cognito_local_enable && var.create_app_client) ? 1 : 0
   depends_on                           = [aws_cognito_resource_server.resource_server]
   name                                 = "${var.name_prefix}-${var.service_name}-client"
   user_pool_id                         = var.user_pool_id
@@ -54,7 +54,7 @@ resource "aws_cognito_user_pool_client" "app_client" {
 # SSM Parameters to configure the cognito clientid for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-clientid" {
-  count = (var.cognito_central_enable==false && var.create_app_client) ? 1 : 0
+  count = (var.cognito_local_enable && var.cognito_central_enable==false && var.create_app_client) ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/cognito/clientId"
   type      = "String"
   value     = aws_cognito_user_pool_client.app_client[0].id
@@ -64,7 +64,7 @@ resource "aws_ssm_parameter" "cognito-clientid" {
 # SSM Parameters to configure the cognito clientsecret for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-clientsecret" {
-  count = (var.cognito_central_enable==false && var.create_app_client) ? 1 : 0
+  count = (var.cognito_local_enable && var.cognito_central_enable==false && var.create_app_client) ? 1 : 0
   name      = "/${var.name_prefix}/config/${var.service_name}/cognito/clientSecret"
   type      = "String"
   value     = aws_cognito_user_pool_client.app_client[0].client_secret
@@ -74,7 +74,7 @@ resource "aws_ssm_parameter" "cognito-clientsecret" {
 # SSM Parameters to configure the cognito endpoint url for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "cognito-url" {
-  count = (var.cognito_central_enable==false && var.create_app_client) ? 1 : 0
+  count = (var.cognito_local_enable && var.cognito_central_enable==false && var.create_app_client) ? 1 : 0
   name  = "/${var.name_prefix}/config/${var.service_name}/cognito/url"
   type  = "String"
   value = "https://auth.${var.hosted_zone_name}"
