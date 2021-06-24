@@ -45,7 +45,7 @@ resource "grafana_dashboard" "dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/ecs-dashboard.tpl", {
-    "name" : title("ECS ${var.service_name} ${var.environment}")
+    "name" : title("ECS ${var.name_prefix} ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
@@ -60,7 +60,7 @@ resource "grafana_dashboard" "rds_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && length(var.grafana_db_instance_identifier) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/rds-dashboard.tpl", {
-    "name" : title("RDS ${var.service_name} ${var.environment}")
+    "name" : title("RDS ${var.name_prefix} ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
@@ -75,7 +75,7 @@ resource "grafana_dashboard" "sns_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && length(local.sns_topic_names) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/sns-dashboard.tpl", {
-    "name" : title("SNS ${var.service_name} ${var.environment}")
+    "name" : title("SNS ${var.name_prefix} ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
@@ -90,7 +90,7 @@ resource "grafana_dashboard" "sqs_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && length(local.sqs_queue_names) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/sqs-dashboard.tpl", {
-    "name" : title("SQS ${var.service_name} ${var.environment}")
+    "name" : title("SQS ${var.name_prefix} ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
@@ -105,7 +105,7 @@ resource "grafana_dashboard" "s3_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && length(local.s3_bucket_names) > 0 ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/s3-dashboard.tpl", {
-    "name" : title("S3 ${var.service_name} ${var.environment}")
+    "name" : title("S3 ${var.name_prefix} ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
@@ -120,7 +120,7 @@ resource "grafana_dashboard" "elasticache_dashboard_in_folder" {
   count  = var.grafana_create_dashboard == true && var.use_elasticache == true ? 1 : 0
   folder = grafana_folder.collection[0].id
   config_json = templatefile("${path.module}/grafana-templates/elasticache-dashboard.tpl", {
-    "name" : title("Elasticache ${var.service_name} ${var.environment}")
+    "name" : title("Elasticache ${var.name_prefix} ${var.service_name} ${var.environment}")
     "environment" : var.environment
     "name_prefix" : var.name_prefix
     "application" : var.service_name
