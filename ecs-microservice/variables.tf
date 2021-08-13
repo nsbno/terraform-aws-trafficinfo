@@ -228,18 +228,23 @@ variable "cache_number_cache_clusters" {
   default     = 1
 }
 
-variable "service_alarm_latency_treshold" {
-  description = "threshold for latency alarm in milliseconds"
-  default     = 2000
-}
-
 variable "service_alarm_cpu_evaluation_periods" {
   description = "number of evaluation periods before triggering alarm"
   default     = 5
 }
 
-variable "service_alarm_memory_treshold" {
-  description = "threshold for memory usage"
+variable "service_alarm_latency_threshold" {
+  description = "Alarm threshold for high latency (milliseconds)"
+  default     = 2000
+}
+
+variable "service_alarm_memory_threshold" {
+  description = "Alarm threshold for High memory usage (percent)"
+  default     = 80
+}
+
+variable "service_alarm_cpu_threshold" {
+  description = "Alarm threshold for High CPU usage (percent)"
   default     = 80
 }
 
