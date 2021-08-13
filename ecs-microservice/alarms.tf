@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
   alarm_name          = "${var.name_prefix}-${var.service_name}-cpu"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = var.service_alarm_cpu_evaluation_periods
-  threshold           = 80
+  threshold           = var.service_alarm_cpu_threshold
   namespace           = "AWS/ECS"
   dimensions = {
     ClusterName = var.ecs_cluster.name
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "high_memory_utilization" {
   alarm_name          = "${var.name_prefix}-${var.service_name}-memory"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 5
-  threshold           = var.service_alarm_memory_treshold
+  threshold           = var.service_alarm_memory_threshold
   namespace           = "AWS/ECS"
   dimensions = {
     ClusterName = var.ecs_cluster.name
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "high_latency" {
   alarm_name          = "${var.name_prefix}-${var.service_name}-latency"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 5
-  threshold           = var.service_alarm_latency_treshold
+  threshold           = var.service_alarm_latency_threshold
   namespace           = "AWS/ApiGateway"
   dimensions = {
     ApiName = "${var.name_prefix}-${var.service_name}"
