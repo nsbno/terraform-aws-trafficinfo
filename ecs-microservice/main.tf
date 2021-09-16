@@ -22,11 +22,15 @@ module "ecs_fargate_microservice" {
   task_container_port               = var.task_container_port
   task_definition_memory            = var.task_definition_memory
   task_definition_cpu               = var.task_definition_cpu
-  health_check_grace_period_seconds = 30
+  health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   health_check = {
-    port = var.health_check_port
-    path = var.health_check_path
+    port                = var.health_check_port
+    path                = var.health_check_path
+    healthy_threshold   = var.health_check_healthy_threshold
+    unhealthy_threshold = var.health_check_unhealthy_threshold
+    timeout             = var.health_check_timeout
+    interval            = var.health_check_interval
   }
 
   lb_arn                          = var.alb.arn

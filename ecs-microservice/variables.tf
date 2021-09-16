@@ -53,12 +53,42 @@ variable "task_definition_cpu" {
   default     = 256
 }
 
+variable "health_check_grace_period_seconds" {
+  default     = 30
+  description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers."
+  type        = number
+}
+
 variable "health_check_path" {
   description = "the path to call for health check"
 }
 
 variable "health_check_port" {
   description = "the port tp call for health check"
+}
+
+variable "health_check_healthy_threshold" {
+  default     = 3
+  description = "The number of consecutive health checks successes required before considering an unhealthy target healthy."
+  type        = number
+}
+
+variable "health_check_unhealthy_threshold" {
+  default     = 3
+  description = "The number of consecutive health check failures required before considering a target unhealthy."
+  type        = number
+}
+
+variable "health_check_timeout" {
+  default     = 5
+  description = "The amount of time, in seconds, during which no response means a failed health check."
+  type        = number
+}
+
+variable "health_check_interval" {
+  default     = 30
+  description = "The approximate amount of time in seconds between health checks of an individual target."
+  type        = number
 }
 
 variable "alb" {
