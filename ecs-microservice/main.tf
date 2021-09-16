@@ -25,8 +25,12 @@ module "ecs_fargate_microservice" {
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   health_check = {
-    port = var.health_check_port
-    path = var.health_check_path
+    port                = var.health_check_port
+    path                = var.health_check_path
+    healthy_threshold   = var.health_check_healthy_threshold
+    unhealthy_threshold = var.health_check_unhealthy_threshold
+    timeout             = var.health_check_timeout
+    interval            = var.health_check_interval
   }
 
   lb_arn                          = var.alb.arn
