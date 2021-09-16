@@ -61,6 +61,12 @@ variable "health_check_port" {
   description = "the port tp call for health check"
 }
 
+variable "health_check_grace_period_seconds" {
+  default     = 30
+  description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers."
+  type        = number
+}
+
 variable "alb" {
   description = "the load balancer to use"
 }
