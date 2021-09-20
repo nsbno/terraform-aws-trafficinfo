@@ -13,9 +13,15 @@ variable "name_prefix" {
   description = "A prefix used for naming resources."
 }
 
-variable "alarms_sns_topic_arn" {
+variable "alarms_outage_sns_topic_arn" {
   type        = list(string)
-  description = "The arn(s) of the SNS topic(s) for the alarm to publish to"
+  description = "The arn(s) of the SNS topic(s) for the alarm to publish to with the alarm level OUTAGE."
+  default     = []
+}
+
+variable "alarms_degraded_sns_topic_arn" {
+  type        = list(string)
+  description = "The arn(s) of the SNS topic(s) for the alarm to publish to with the alarm level DEGRADED."
   default     = []
 }
 

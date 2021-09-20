@@ -13,8 +13,8 @@ resource "aws_cloudwatch_metric_alarm" "service_unhealthy" {
   statistic         = "Average"
   alarm_description = "${var.name_prefix}-${var.service_name} service has unhealthy targets"
   tags              = var.tags
-  alarm_actions     = var.alarms_sns_topic_arn
-  ok_actions        = var.alarms_sns_topic_arn
+  alarm_actions     = var.alarms_outage_sns_topic_arn
+  ok_actions        = var.alarms_outage_sns_topic_arn
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
@@ -32,8 +32,8 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
   statistic         = "Average"
   alarm_description = "${var.name_prefix}-${var.service_name} has crossed the CPU usage treshold"
   tags              = var.tags
-  alarm_actions     = var.alarms_sns_topic_arn
-  ok_actions        = var.alarms_sns_topic_arn
+  alarm_actions     = var.alarms_degraded_sns_topic_arn
+  ok_actions        = var.alarms_degraded_sns_topic_arn
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_memory_utilization" {
@@ -51,8 +51,8 @@ resource "aws_cloudwatch_metric_alarm" "high_memory_utilization" {
   statistic         = "Average"
   alarm_description = "${var.name_prefix}-${var.service_name} has crossed the memory usage treshold"
   tags              = var.tags
-  alarm_actions     = var.alarms_sns_topic_arn
-  ok_actions        = var.alarms_sns_topic_arn
+  alarm_actions     = var.alarms_degraded_sns_topic_arn
+  ok_actions        = var.alarms_degraded_sns_topic_arn
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_latency" {
@@ -69,8 +69,8 @@ resource "aws_cloudwatch_metric_alarm" "high_latency" {
   statistic          = "Average"
   alarm_description  = "${var.name_prefix}-${var.service_name} latency is above configured treshold"
   tags               = var.tags
-  alarm_actions      = var.alarms_sns_topic_arn
-  ok_actions         = var.alarms_sns_topic_arn
+  alarm_actions      = var.alarms_degraded_sns_topic_arn
+  ok_actions         = var.alarms_degraded_sns_topic_arn
   treat_missing_data = "notBreaching"
 }
 
@@ -88,8 +88,8 @@ resource "aws_cloudwatch_metric_alarm" "num_errors_service" {
   statistic          = "Average"
   alarm_description  = "${var.name_prefix}-${var.service_name} has crossed the 5xx error treshold"
   tags               = var.tags
-  alarm_actions      = var.alarms_sns_topic_arn
-  ok_actions         = var.alarms_sns_topic_arn
+  alarm_actions      = var.alarms_degraded_sns_topic_arn
+  ok_actions         = var.alarms_degraded_sns_topic_arn
   treat_missing_data = "notBreaching"
 }
 
@@ -107,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "num_error_logs" {
   statistic          = "Sum"
   alarm_description  = "${var.name_prefix}-${var.service_name} has logged to many errors"
   tags               = var.tags
-  alarm_actions      = var.alarms_sns_topic_arn
-  ok_actions         = var.alarms_sns_topic_arn
+  alarm_actions      = var.alarms_degraded_sns_topic_arn
+  ok_actions         = var.alarms_degraded_sns_topic_arn
   treat_missing_data = "notBreaching"
 }
