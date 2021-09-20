@@ -15,7 +15,7 @@ variable "name_prefix" {
 
 variable "alarms_critical_sns_topic_arn" {
   type        = list(string)
-  description = "The arn(s) of the SNS topic(s) for the alarm to publish to with the alarm level CRITCAL."
+  description = "The arn(s) of the SNS topic(s) for the alarm to publish to with the alarm level CRITICAL."
   default     = []
 }
 
