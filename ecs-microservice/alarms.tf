@@ -13,8 +13,8 @@ resource "aws_cloudwatch_metric_alarm" "service_unhealthy" {
   statistic         = "Average"
   alarm_description = "${var.name_prefix}-${var.service_name} service has unhealthy targets"
   tags              = var.tags
-  alarm_actions     = var.alarms_outage_sns_topic_arn
-  ok_actions        = var.alarms_outage_sns_topic_arn
+  alarm_actions     = var.alarms_critical_sns_topic_arn
+  ok_actions        = var.alarms_critical_sns_topic_arn
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
