@@ -1,3 +1,80 @@
+# Alarm SNS topic for alarms on level DEGRADED.
+resource "aws_sns_topic" "degraded_alarms" {
+  name = "${var.name_prefix}-${var.service_name}-degraded-alarms"
+  tags = var.tags
+}
+
+# Alarm SNS topic for alarms on level CRITICAL
+resource "aws_sns_topic" "critical_alarms" {
+  name = "${var.name_prefix}-${var.service_name}-critical-alarms"
+  tags = var.tags
+}
+
+# Subscribe Critical alarms to PagerDuty
+resource "aws_sns_topic_subscription" "critical_alarms_to_pagerduty" {
+  count                  = var.pager_duty_critical_endpoint == "" ? 0 : 1
+  endpoint               = var.pager_duty_critical_endpoint
+  protocol               = "https"
+  endpoint_auto_confirms = true
+  topic_arn              = aws_sns_topic.critical_alarms.arn
+}
+
+# Subscribe Degraded alarms to PagerDuty
+resource "aws_sns_topic_subscription" "degraded_alarms_to_pagerduty" {
+  count                  = var.pager_duty_degraded_endpoint == "" ? 0 : 1
+  endpoint               = var.pager_duty_degraded_endpoint
+  protocol               = "https"
+  endpoint_auto_confirms = true
+  topic_arn              = aws_sns_topic.degraded_alarms.arn
+}
+
+# Lambda to send notification of alarms to Slack.
+data "aws_lambda_function" "alarms_to_slack" {
+  function_name    = "${var.name_prefix}-infra_alarms_to_slack"
+}
+
+# Permission to lambda to invoke from SNS degraded_alarms
+resource "aws_lambda_permission" "permission_invoke_alarms_to_slack_to_sns_degraded_alarms" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.alarms_to_slack.arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.degraded_alarms.arn
+}
+
+# Permission to lambda to invoke from SNS critical_alarms
+resource "aws_lambda_permission" "permission_invoke_alarms_to_slack_to_sns_critical_alarms" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.alarms_to_slack.arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.critical_alarms.arn
+}
+
+# Subscribe SNS Topic for Critical Alarms to lambda.
+resource "aws_sns_topic_subscription" "critical_alarms_to_slack_subscription" {
+  endpoint  = data.aws_lambda_function.alarms_to_slack.arn
+  protocol  = "lambda"
+  topic_arn = aws_sns_topic.critical_alarms.arn
+}
+
+# Subscribe SNS Topic for Degraded Alarms to lambda.
+resource "aws_sns_topic_subscription" "degraded_alarms_to_slack_subscription" {
+  endpoint  = data.aws_lambda_function.alarms_to_slack.arn
+  protocol  = "lambda"
+  topic_arn = aws_sns_topic.degraded_alarms.arn
+}
+
+# Subscribe SNS Topic for Critical Alarms to lambda.
+resource "aws_sns_topic_subscription" "subscribe_alarms_to_slack_to_sns_critical_alarms" {
+  endpoint  = data.aws_lambda_function.alarms_to_slack.arn
+  protocol  = "lambda"
+  topic_arn = aws_sns_topic.critical_alarms.arn
+}
+
+############################################################################################
+# Configure Default Cloudwatch Alarms for service
+############################################################################################
 resource "aws_cloudwatch_metric_alarm" "service_unhealthy" {
   metric_name         = "UnHealthyHostCount"
   alarm_name          = "${var.name_prefix}-${var.service_name}-unhealthy"
