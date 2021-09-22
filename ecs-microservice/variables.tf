@@ -13,12 +13,6 @@ variable "name_prefix" {
   description = "A prefix used for naming resources."
 }
 
-variable "alarms_sns_topic_arn" {
-  type        = list(string)
-  description = "The arn(s) of the SNS topic(s) for the alarm to publish to"
-  default     = []
-}
-
 variable "service_name" {
   description = "the microservice name"
 }
@@ -342,7 +336,6 @@ variable "cognito_central_resource_server_identifier" {
   default     = ""
 }
 
-#
 ##############################################
 # Toggle X-Ray tracing for microservice in API-Gateway
 #
@@ -351,4 +344,20 @@ variable "api_gateway_enable_xray" {
   description = "Used to enable xray tracing in api gateway, default false"
   type        = bool
   default     = false
+}
+
+##############################################
+# PagerDuty Endpoint to subscribe SNS Alarms for service.
+# Two levels of alarms, Critical and Degraded,
+##############################################
+variable "pager_duty_critical_endpoint" {
+  description = "(Optional) The PagerDuty endpoint where to subscribe CRITICAL alarms."
+  type        = string
+  default     = ""
+}
+
+variable "pager_duty_degraded_endpoint" {
+  description = "(Optional) The PagerDuty endpoint where to subscribe DEGRADED alarms."
+  type        = string
+  default     = ""
 }
