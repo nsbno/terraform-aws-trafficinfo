@@ -8,7 +8,6 @@ data "aws_lambda_function" "alarms_to_metrics" {
 
 # Permission to lambda to invoke from SNS degraded_alarms
 resource "aws_lambda_permission" "permission_invoke_alarms_to_metrics_to_sns_degraded_alarms" {
-  statement_id  = "AllowInvokeFromDegradedAlarmsSNS"
   action        = "lambda:InvokeFunction"
   function_name = data.aws_lambda_function.alarms_to_metrics.arn
   principal     = "sns.amazonaws.com"
@@ -17,7 +16,6 @@ resource "aws_lambda_permission" "permission_invoke_alarms_to_metrics_to_sns_deg
 
 # Permission to lambda to invoke from SNS critical_alarms
 resource "aws_lambda_permission" "permission_invoke_alarms_to_metrics_to_sns_critical_alarms" {
-  statement_id  = "AllowInvokeFromCriticalAlarmsSNS"
   action        = "lambda:InvokeFunction"
   function_name = data.aws_lambda_function.alarms_to_metrics.arn
   principal     = "sns.amazonaws.com"
