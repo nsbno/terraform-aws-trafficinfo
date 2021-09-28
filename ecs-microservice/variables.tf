@@ -126,6 +126,11 @@ variable "sqs_queues" {
   default = []
 }
 
+variable "sqs_queues_write" {
+  type = list(string)
+  default = []
+}
+
 variable "encryption_keys" {
   type    = list(string)
   default = []

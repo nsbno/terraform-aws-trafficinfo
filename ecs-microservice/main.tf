@@ -179,6 +179,18 @@ data "aws_iam_policy_document" "read_sqs_from_microservice" {
   }
 }
 
+data "aws_iam_policy_document" "write_sqs_from_microservice" {
+  statement {
+    effect = "Allow"
+
+    resources = var.sqs_queues_write
+
+    actions = [
+      "sqs:SendMessage",
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "sns_publish_topic" {
   statement {
     effect = "Allow"
@@ -210,6 +222,14 @@ resource "aws_iam_role_policy" "read_sqs_from_microservice" {
   name     = "${var.name_prefix}-${var.service_name}-read_sqs_from_microservice"
 
   policy = data.aws_iam_policy_document.read_sqs_from_microservice.json
+  role   = module.ecs_fargate_microservice.task_role_name
+}
+
+resource "aws_iam_role_policy" "write_sqs_from_microservice" {
+  for_each = length(var.sqs_queues_write) > 0 ? { 1 : "dummy" } : {}
+  name     = "${var.name_prefix}-${var.service_name}-write_sqs_from_microservice"
+
+  policy = data.aws_iam_policy_document.write_sqs_from_microservice.json
   role   = module.ecs_fargate_microservice.task_role_name
 }
 
