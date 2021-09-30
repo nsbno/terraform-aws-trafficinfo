@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "service_unhealthy" {
     LoadBalancer = var.alb.arn_suffix
   }
   period            = 60
-  statistic         = "Average"
+  statistic         = "Sum"
   alarm_description = "${var.name_prefix}-${var.service_name} service has unhealthy targets"
   tags              = var.tags
   alarm_actions     = [aws_sns_topic.critical_alarms.arn]
