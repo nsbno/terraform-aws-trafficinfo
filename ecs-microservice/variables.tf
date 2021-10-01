@@ -361,3 +361,8 @@ variable "pager_duty_degraded_endpoint" {
   type        = string
   default     = ""
 }
+
+variable "alarms_to_slack_function_name" {
+  description = "The name of the lambda function that sends alarms to slack ({var.name_prefix}-infra_alarms_to_slack)"
+  type = string
+}

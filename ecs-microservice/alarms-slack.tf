@@ -3,7 +3,7 @@
 ############################################################################################
 # Lambda to send notification of alarms to Slack.
 data "aws_lambda_function" "alarms_to_slack" {
-  function_name = "${var.name_prefix}-infra_alarms_to_slack"
+  function_name = var.alarms_to_slack_function_name
 }
 
 # Permission to lambda to invoke from SNS degraded_alarms
