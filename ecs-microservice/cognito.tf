@@ -195,6 +195,11 @@ resource "aws_ssm_parameter" "central_client_secret" {
   })
 }
 
+locals {
+  cognito_env = "${length(var.cognito_central_env) > 0 ? var.cognito_central_env : var.environment}"
+  central_cognito_url = "https://auth.${var.default_production_environment == local.cognito_env ? "" : "${local.cognito_env}."}cognito.vydev.io"
+}
+
 # SSM Parameters to configure the cognito endpoint url for microservice when requesting
 # access tokens from Cognito to communicate with other services.
 resource "aws_ssm_parameter" "central_cognito_url" {
@@ -208,7 +213,7 @@ resource "aws_ssm_parameter" "central_cognito_url" {
   })
 
   # Use default environment, or overridden cognito environment.
-  value = "https://auth.${length(var.cognito_central_env)>0 ? var.cognito_central_env : var.environment}.cognito.vydev.io"
+  value = local.central_cognito_url
   overwrite = true
 }
 

@@ -341,6 +341,11 @@ variable "cognito_central_resource_server_identifier" {
   default     = ""
 }
 
+variable "default_production_environment" {
+  type = string
+  default = ""
+}
+
 ##############################################
 # Toggle X-Ray tracing for microservice in API-Gateway
 #
