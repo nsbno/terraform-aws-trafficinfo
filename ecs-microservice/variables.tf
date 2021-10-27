@@ -376,3 +376,14 @@ variable "alarms_to_slack_function_name" {
   description = "The name of the lambda function that sends alarms to slack ({var.name_prefix}-infra_alarms_to_slack)"
   type = string
 }
+
+##############################################
+# Access log for API-Gateway
+#
+##############################################
+
+variable "access_log_retention_in_days" {
+  description = "The number of days to preserve the access log entries. If 0, the events in the log group will never expire"
+  type = number
+  default = 14
+}

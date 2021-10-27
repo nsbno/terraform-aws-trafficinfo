@@ -1,0 +1,1 @@
+{"resourcePath":"$context.resourcePath", "httpMethod":"$context.httpMethod", "status":$context.status, "requestId":"$context.requestId", "ip": "$context.identity.sourceIp", "caller":"$context.identity.caller", "user":"$context.identity.user", "requestTime":"$context.requestTime", "protocol":"$context.protocol", "responseLength":$context.responseLength}
