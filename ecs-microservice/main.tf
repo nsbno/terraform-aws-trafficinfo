@@ -152,6 +152,11 @@ resource "aws_api_gateway_stage" "api_gateway_microservice_stage_v1" {
   deployment_id        = aws_api_gateway_deployment.api_gateway_microservice_rest_api_deployment_v1.id
   xray_tracing_enabled = var.api_gateway_enable_xray
 
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.cloudwatch_log_group_api_gateway_access_log.arn
+    format          = file("${path.module}/logs/access_log_format.json")
+  }
+
   variables = {
     hash = sha256(var.schema)
   }
@@ -163,6 +168,12 @@ resource "aws_api_gateway_base_path_mapping" "gateway_base_path_mapping" {
   stage_name  = aws_api_gateway_stage.api_gateway_microservice_stage_v1.stage_name
   domain_name = var.domain_name
   base_path   = var.base_path
+}
+
+resource "aws_cloudwatch_log_group" "cloudwatch_log_group_api_gateway_access_log" {
+  name              = "API-Gateway-${var.name_prefix}-${var.service_name}-access-log"
+  tags              = var.tags
+  retention_in_days = var.access_log_retention_in_days
 }
 
 data "aws_iam_policy_document" "read_sqs_from_microservice" {
