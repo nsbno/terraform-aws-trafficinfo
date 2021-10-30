@@ -12,3 +12,11 @@ output "api_gateway_deployment" {
   description = "The Deployment created in the API Gateway for microservice."
   value       = aws_api_gateway_deployment.api_gateway_microservice_rest_api_deployment_v1
 }
+
+output "critical_alarm_topic_arn" {
+  value = aws_sns_topic.critical_alarms.arn
+}
+
+output "degraded_alarm_topic_arn" {
+  value = aws_sns_topic.degraded_alarms.arn
+}
