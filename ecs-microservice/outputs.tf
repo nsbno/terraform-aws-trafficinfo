@@ -14,9 +14,11 @@ output "api_gateway_deployment" {
 }
 
 output "critical_alarm_topic_arn" {
+  description = "ARN of the SNS topic where Critical alarms will be sent."
   value = aws_sns_topic.critical_alarms.arn
 }
 
 output "degraded_alarm_topic_arn" {
+  description = "ARN of the SNS topic where degraded alarms will be sent."
   value = aws_sns_topic.degraded_alarms.arn
 }
