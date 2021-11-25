@@ -86,12 +86,8 @@ variable "health_check_interval" {
 }
 
 variable "lbs" {
-  description = "Map of identifier to LB configuration. The key must be a string, while the value must be an object containing the keys arn, arn_suffix and security_group_id."
-  type        = map(object({ arn = string, arn_suffix = string, security_group_id = string }))
-}
-
-variable "alb_http_listener" {
-  description = "the http listener for the alb load balancer."
+  description = "Map of identifier to LB configuration. The key must be a string, while the value must be an object containing the keys arn, arn_suffix, listener_arn and security_group_id."
+  type        = map(object({ arn = string, arn_suffix = string, listener_arn = string, security_group_id = string }))
 }
 
 variable "alb_priority" {

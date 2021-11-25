@@ -49,7 +49,7 @@ module "ecs_fargate_microservice" {
 
 resource "aws_lb_listener_rule" "ecs_fargate_microservice_lb_listener" {
   for_each     = var.lbs
-  listener_arn = var.alb_http_listener.arn
+  listener_arn = each.value.listener_arn
   priority     = var.alb_priority
 
   action {
