@@ -85,8 +85,9 @@ variable "health_check_interval" {
   type        = number
 }
 
-variable "alb" {
-  description = "the load balancer to use"
+variable "lbs" {
+  description = "Map of identifier to LB configuration. The key must be a string, while the value must be an object containing the keys arn, arn_suffix and security_group_id."
+  type        = map(object({ arn = string, arn_suffix = string, security_group_id = string }))
 }
 
 variable "alb_http_listener" {
@@ -127,7 +128,7 @@ variable "sqs_queues" {
 }
 
 variable "sqs_queues_write" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
@@ -211,7 +212,7 @@ variable "cognito_resource_server_identifier_base" {
 
 variable "resource_server_scopes" {
   description = "Scopes to add to resource server."
-  type        = map
+  type        = map(any)
   default = {
     scope = {
       "scope_name" : "access"
@@ -281,7 +282,7 @@ variable "service_alarm_cpu_threshold" {
 # Configure Grafana Dashboard generation.
 #
 ##############################################
-variable grafana_db_instance_identifier {
+variable "grafana_db_instance_identifier" {
   description = "(Optional) Specify db instance identifier to create grafana dashboard."
   type        = string
   default     = ""
@@ -342,7 +343,7 @@ variable "cognito_central_resource_server_identifier" {
 }
 
 variable "default_production_environment" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -374,7 +375,7 @@ variable "pager_duty_degraded_endpoint" {
 
 variable "alarms_to_slack_function_name" {
   description = "The name of the lambda function that sends alarms to slack ({var.name_prefix}-infra_alarms_to_slack)"
-  type = string
+  type        = string
 }
 
 ##############################################
@@ -384,6 +385,6 @@ variable "alarms_to_slack_function_name" {
 
 variable "access_log_retention_in_days" {
   description = "The number of days to preserve the access log entries. If 0, the events in the log group will never expire"
-  type = number
-  default = 14
+  type        = number
+  default     = 14
 }
