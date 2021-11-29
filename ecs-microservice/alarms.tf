@@ -17,15 +17,16 @@ resource "aws_sns_topic" "critical_alarms" {
 # Configure Default Cloudwatch Alarms for service
 ############################################################################################
 resource "aws_cloudwatch_metric_alarm" "service_unhealthy" {
+  for_each            = var.lbs
   metric_name         = "UnHealthyHostCount"
-  alarm_name          = "${var.name_prefix}-${var.service_name}-unhealthy"
+  alarm_name          = "${var.name_prefix}-${var.service_name}-${each.key}-unhealthy"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   threshold           = 1
   namespace           = "AWS/ApplicationELB"
   dimensions = {
-    TargetGroup  = module.ecs_fargate_microservice.target_group_arn_suffix
-    LoadBalancer = var.alb.arn_suffix
+    TargetGroup  = module.ecs_fargate_microservice.target_group_arn_suffixes[each.key]
+    LoadBalancer = each.value.arn_suffix
   }
   period            = 60
   statistic         = "Sum"

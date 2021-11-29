@@ -12,8 +12,13 @@
 # - central cognito resource server, scopes and application client.
 #
 ##########################################################################
+locals {
+  lb_identifiers = toset([for k, lb in var.lbs : k])
+  lb_arns        = [for k, lb in var.lbs : nonsensitive(lb.arn)]
+}
+
 module "ecs_fargate_microservice" {
-  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=06e632c"
+  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=f048e0c"
   cluster_id                        = var.ecs_cluster.id
   name_prefix                       = "${var.name_prefix}-${var.service_name}"
   vpc_id                            = var.vpc.vpc_id
@@ -33,7 +38,8 @@ module "ecs_fargate_microservice" {
     interval            = var.health_check_interval
   }
 
-  lb_arn                          = var.alb.arn
+  lb_arns                         = local.lb_arns
+  target_group_identifiers        = local.lb_identifiers
   task_container_assign_public_ip = true
 
   tags          = var.tags
@@ -42,12 +48,13 @@ module "ecs_fargate_microservice" {
 
 
 resource "aws_lb_listener_rule" "ecs_fargate_microservice_lb_listener" {
-  listener_arn = var.alb_http_listener.arn
+  for_each     = var.lbs
+  listener_arn = each.value.listener_arn
   priority     = var.alb_priority
 
   action {
     type             = "forward"
-    target_group_arn = module.ecs_fargate_microservice.target_group_arn
+    target_group_arn = module.ecs_fargate_microservice.target_group_arns[each.key]
   }
 
   condition {
@@ -62,12 +69,13 @@ resource "aws_lb_listener_rule" "ecs_fargate_microservice_lb_listener" {
 
 # Let the load balancer communicate with microservice on the service port.
 resource "aws_security_group_rule" "ecs_fargate_microservice_alb_allow" {
+  for_each                 = var.lbs
   security_group_id        = module.ecs_fargate_microservice.service_sg_id
   type                     = "ingress"
   from_port                = var.service_port
   to_port                  = var.task_container_port
   protocol                 = "tcp"
-  source_security_group_id = var.alb.security_group_id
+  source_security_group_id = each.value.security_group_id
 }
 
 resource "aws_security_group_rule" "ecs_rds_sg_allow" {
