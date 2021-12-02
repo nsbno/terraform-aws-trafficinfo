@@ -40,7 +40,7 @@ data "aws_lambda_alias" "log_to_elasticsearch_alias" {
 # different kinds of resource in AWS, for example SQS and SNS.
 ###############################################################
 module "agent_task_role_attachments" {
-  source            = "..\/ecs-anywhere-task-role-attachments"
+  source            = "../ecs-anywhere-task-role-attachments"
   name_prefix       = "${var.name_prefix}-${var.application_name}"
   task_role_name    = module.agent.task_role
 
