@@ -22,6 +22,16 @@ variable "sqs_integration_arn" {
   description = "ARN of SQS queue to send to"
 }
 
+variable "logging_level" {
+  description = "Set level of loggin for Rest API"
+  default     = "ERROR"
+}
+
+variable "logenabled" {
+  description = "Enable trace and metrics"
+  default     = "false"
+}
+
 variable "cognito_resource_server_identifier_base" {
   description = "The base identifier used by resource servers created by esc-microservice module."
 }
