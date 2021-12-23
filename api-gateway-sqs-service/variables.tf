@@ -27,6 +27,11 @@ variable "logging_level" {
   default     = "ERROR"
 }
 
+variable "logenabled" {
+  description = "Enable trace and metrics"
+  default     = "false"
+}
+
 variable "cognito_resource_server_identifier_base" {
   description = "The base identifier used by resource servers created by esc-microservice module."
 }

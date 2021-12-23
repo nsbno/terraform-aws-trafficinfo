@@ -43,6 +43,8 @@ resource "aws_api_gateway_method_settings" "gateway_settings" {
 
   settings {
     logging_level = var.logging_level
+    data_trace_enabled = var.logenabled
+    metrics_enabled = var.logenabled
   }
 }
 
