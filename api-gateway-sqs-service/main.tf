@@ -42,7 +42,7 @@ resource "aws_api_gateway_method_settings" "gateway_settings" {
   method_path = "*/*"
 
   settings {
-    logging_level = "ERROR"
+    logging_level = var.logging_level
   }
 }
 
