@@ -340,7 +340,7 @@ variable "cognito_central_resource_server_identifier" {
 
 variable "default_production_environment" {
   type    = string
-  default = ""
+  default = "prod"
 }
 
 ##############################################
