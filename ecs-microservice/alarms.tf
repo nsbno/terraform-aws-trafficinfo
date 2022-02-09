@@ -130,3 +130,31 @@ resource "aws_cloudwatch_metric_alarm" "num_error_logs" {
   ok_actions         = [aws_sns_topic.degraded_alarms.arn]
   treat_missing_data = "notBreaching"
 }
+
+resource "aws_cloudwatch_metric_alarm" "log_group_size" {
+  alarm_name          = "${var.name_prefix}-log-group-size"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 5
+  threshold           = 1073741824 // 1Gb, metric is reported in bytes
+
+  metric_query {
+    id = "SumIncomingBytesForLogGroups"
+
+    metric {
+      metric_name = "IncomingBytes"
+      namespace   = "AWS/Logs"
+      period      = "21600" # 6 hours
+      stat        = "Sum"
+      unit        = "Count"
+
+      dimensions = {
+        LogGroupName = ""
+      }
+    }
+  }
+
+  alarm_description = "Log group surpassed 1 GB in size for the last 6 hours"
+  tags              = var.tags
+  alarm_actions      = [aws_sns_topic.degraded_alarms.arn]
+  ok_actions         = [aws_sns_topic.degraded_alarms.arn]
+}
