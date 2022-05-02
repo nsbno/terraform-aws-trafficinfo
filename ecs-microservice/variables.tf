@@ -384,3 +384,17 @@ variable "access_log_retention_in_days" {
   type        = number
   default     = 14
 }
+
+### Container environment variables
+variable "task_container_environment" {
+  description = "Environment variables to inject into the container"
+  type        = map(string)
+  default     = {}
+}
+
+### Ephemeral storage amount
+variable "size_in_gb" {
+  description = "The total amount of ephemeral storage available, beyond the default amount"
+  type        = number
+  default     = 0
+}
