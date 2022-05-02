@@ -18,7 +18,7 @@ locals {
 }
 
 module "ecs_fargate_microservice" {
-  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=10f79c8"
+  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=ac78639"
   cluster_id                        = var.ecs_cluster.id
   name_prefix                       = "${var.name_prefix}-${var.service_name}"
   vpc_id                            = var.vpc.vpc_id

@@ -394,7 +394,7 @@ variable "task_container_environment" {
 
 ### Ephemeral storage amount
 variable "size_in_gb" {
-  description = "The total amount of ephemeral storage available, beyond the default amount"
+  description = "The total amount of ephemeral storage available, beyond the default amount. Must be between 21 and 200"
   type        = number
-  default     = 0
+  default     = null
 }
