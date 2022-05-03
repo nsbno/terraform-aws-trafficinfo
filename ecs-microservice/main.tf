@@ -45,7 +45,7 @@ module "ecs_fargate_microservice" {
 
   tags          = var.tags
   desired_count = var.desired_count
-  size_in_gib   = var.size_in_gb
+  size_in_gib   = var.size_in_gib
 }
 
 
