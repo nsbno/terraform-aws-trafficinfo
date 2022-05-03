@@ -18,7 +18,7 @@ locals {
 }
 
 module "ecs_fargate_microservice" {
-  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=f048e0c"
+  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=4aa9eb6"
   cluster_id                        = var.ecs_cluster.id
   name_prefix                       = "${var.name_prefix}-${var.service_name}"
   vpc_id                            = var.vpc.vpc_id
@@ -27,6 +27,7 @@ module "ecs_fargate_microservice" {
   task_container_port               = var.task_container_port
   task_definition_memory            = var.task_definition_memory
   task_definition_cpu               = var.task_definition_cpu
+  task_container_environment        = var.task_container_environment
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   health_check = {
@@ -44,6 +45,7 @@ module "ecs_fargate_microservice" {
 
   tags          = var.tags
   desired_count = var.desired_count
+  size_in_gib   = var.size_in_gib
 }
 
 
