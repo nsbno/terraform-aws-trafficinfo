@@ -1,6 +1,6 @@
 
 resource "aws_iam_user" "ext_sqs_machine_user" {
-  name          = "${var.name_prefix}-ext_sqs_machine_user"
+  name          = "${var.name_prefix}-ext_machine_user"
   path          = "/machine-user/"
   force_destroy = true
 }
