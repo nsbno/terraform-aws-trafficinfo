@@ -1,25 +1,25 @@
 
-resource "aws_iam_user" "ext_sqs_machine_user" {
+resource "aws_iam_user" "ext_machine_user" {
   name          = "${var.name_prefix}-ext_machine_user"
   path          = "/machine-user/"
   force_destroy = true
 }
 
-resource "aws_iam_access_key" "ext_sqs_machine_user" {
-  user = aws_iam_user.ext_sqs_machine_user.name
+resource "aws_iam_access_key" "ext_machine_user" {
+  user = aws_iam_user.ext_machine_user.name
 }
 
 resource "aws_ssm_parameter" "ext_sqs_user_id" {
-  name   = format("%s%s", var.ssm_prefix == "" ? "" : "${var.ssm_prefix}/", "${var.name_prefix}-ext-sqs-user-id")
+  name   = format("%s%s", var.ssm_prefix == "" ? "" : "${var.ssm_prefix}/", "${var.name_prefix}-ext-user-id")
   type   = "SecureString"
-  value  = aws_iam_access_key.ext_sqs_machine_user.id
+  value  = aws_iam_access_key.ext_machine_user.id
   key_id = var.machine_user_parameters_key
 }
 
 resource "aws_ssm_parameter" "ext_sqs_user_key" {
-  name   = format("%s%s", var.ssm_prefix == "" ? "" : "${var.ssm_prefix}/", "${var.name_prefix}-ext-sqs-user-key")
+  name   = format("%s%s", var.ssm_prefix == "" ? "" : "${var.ssm_prefix}/", "${var.name_prefix}-ext-user-key")
   type   = "SecureString"
-  value  = aws_iam_access_key.ext_sqs_machine_user.secret
+  value  = aws_iam_access_key.ext_machine_user.secret
   key_id = var.machine_user_parameters_key
 }
 
@@ -46,13 +46,13 @@ resource "aws_iam_policy" "read_and_delete_from_s3" {
 
 resource "aws_iam_user_policy_attachment" "kms-to-ext-machine-user" {
   count      = var.allowed_kms_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.encrypt_with_kms[0].arn
 }
 
 resource "aws_iam_user_policy_attachment" "decrypt-kms-to-ext-machine-user" {
   count      = var.allowed_decrypt_kms_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.decrypt_with_kms[0].arn
 }
 
@@ -107,7 +107,7 @@ data "aws_iam_policy_document" "push_to_s3" {
 
 resource "aws_iam_user_policy_attachment" "s3-to-ext-machine-user" {
   count      = var.allowed_s3_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.push_to_s3[0].arn
 }
 
@@ -130,7 +130,7 @@ data "aws_iam_policy_document" "read_from_s3" {
 
 resource "aws_iam_user_policy_attachment" "s3-read-to-ext-machine-user" {
   count      = var.allowed_read_s3_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.read_from_s3[0].arn
 }
 
@@ -154,7 +154,7 @@ data "aws_iam_policy_document" "read_and_delete_from_s3" {
 
 resource "aws_iam_user_policy_attachment" "s3-read-and-delete-to-ext-machine-user" {
   count      = var.allowed_read_and_delete_s3_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.read_and_delete_from_s3[0].arn
 }
 
@@ -179,7 +179,7 @@ data "aws_iam_policy_document" "push_to_sqs" {
 
 resource "aws_iam_user_policy_attachment" "sqs-to-ext-machine-user" {
   count      = var.allowed_sqs_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.push_to_sqs[0].arn
 }
 
@@ -206,7 +206,7 @@ data "aws_iam_policy_document" "pull_from_sqs" {
 
 resource "aws_iam_user_policy_attachment" "pull-sqs-to-ext-machine-user" {
   count      = var.allowed_pull_sqs_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.pull_from_sqs[0].arn
 }
 
@@ -240,7 +240,7 @@ data "aws_iam_policy_document" "temporary_queue_response_sqs" {
 
 resource "aws_iam_user_policy_attachment" "push-sqs-to-ext-machine-user" {
   count      = var.allowed_temporary_queue_response_sqs_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.temporary_queue_response_sqs[0].arn
 }
 
@@ -290,7 +290,7 @@ data "aws_iam_policy_document" "temporary_queue_request_sqs" {
 
 resource "aws_iam_user_policy_attachment" "create-temporary-queues-sqs-to-ext-machine-user" {
   count      = var.allowed_temporary_queue_request_sqs_count
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.temporary_queue_request_sqs[0].arn
 }
 
@@ -323,7 +323,7 @@ resource "aws_iam_policy" "read_ssm_application_config" {
 # Attach policy to ext user.
 resource "aws_iam_user_policy_attachment" "read_ssm_config_to_ext_machine_user" {
   count      = length(var.allowed_ssm_arns) > 0 ? 1 : 0
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.read_ssm_application_config[0].arn
 }
 
@@ -355,6 +355,6 @@ resource "aws_iam_policy" "push_metric_data_config" {
 # Attach policy to ext user.
 resource "aws_iam_user_policy_attachment" "push_metric_data_config_to_ext_machine_user" {
   count      = var.cloudwatch_metrics_access ? 1 : 0
-  user       = aws_iam_user.ext_sqs_machine_user.name
+  user       = aws_iam_user.ext_machine_user.name
   policy_arn = aws_iam_policy.push_metric_data_config[0].arn
 }
