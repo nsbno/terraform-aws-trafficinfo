@@ -9,14 +9,14 @@ resource "aws_iam_access_key" "ext_machine_user" {
   user = aws_iam_user.ext_machine_user.name
 }
 
-resource "aws_ssm_parameter" "ext_sqs_user_id" {
+resource "aws_ssm_parameter" "ext_user_id" {
   name   = format("%s%s", var.ssm_prefix == "" ? "" : "${var.ssm_prefix}/", "${var.name_prefix}-ext-user-id")
   type   = "SecureString"
   value  = aws_iam_access_key.ext_machine_user.id
   key_id = var.machine_user_parameters_key
 }
 
-resource "aws_ssm_parameter" "ext_sqs_user_key" {
+resource "aws_ssm_parameter" "ext_user_key" {
   name   = format("%s%s", var.ssm_prefix == "" ? "" : "${var.ssm_prefix}/", "${var.name_prefix}-ext-user-key")
   type   = "SecureString"
   value  = aws_iam_access_key.ext_machine_user.secret
