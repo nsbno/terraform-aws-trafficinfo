@@ -117,14 +117,14 @@ resource "aws_cloudwatch_metric_alarm" "num_error_logs" {
   alarm_name          = "${var.name_prefix}-${var.service_name}-errors-log"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
-  threshold           = 50
+  threshold           = var.num_errors_logged_threshold
   namespace           = "${var.name_prefix}-${var.service_name}"
   dimensions = {
     level = "error"
   }
-  period             = 60
+  period             = var.num_errors_logged_period
   statistic          = "Sum"
-  alarm_description  = "${var.name_prefix}-${var.service_name} has logged to many errors"
+  alarm_description  = "${var.name_prefix}-${var.service_name} has logged too many errors"
   tags               = var.tags
   alarm_actions      = [aws_sns_topic.degraded_alarms.arn]
   ok_actions         = [aws_sns_topic.degraded_alarms.arn]

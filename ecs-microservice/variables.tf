@@ -274,6 +274,18 @@ variable "service_alarm_cpu_threshold" {
   default     = 80
 }
 
+variable "num_errors_logged_threshold" {
+  description = "Alarm threshold value. Default is 50 errors."
+  type        = number
+  default     = 50
+}
+
+variable "num_errors_logged_period" {
+  description = "Alarm period in seconds. Default is 1 minute."
+  type        = number
+  default     = 60
+}
+
 ##############################################
 # Configure Grafana Dashboard generation.
 #
