@@ -37,6 +37,12 @@ variable "task_container_port" {
   description = "the exposed port of the Docker image"
 }
 
+variable "task_container_protocol" {
+  description = "Protocol that the container exposes."
+  default     = "HTTP"
+  type        = string
+}
+
 variable "task_definition_memory" {
   description = "Memory soft limit"
   default     = 512

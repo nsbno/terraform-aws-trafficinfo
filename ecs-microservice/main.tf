@@ -25,6 +25,7 @@ module "ecs_fargate_microservice" {
   private_subnet_ids                = var.vpc.private_subnet_ids
   task_container_image              = var.task_container_image
   task_container_port               = var.task_container_port
+  task_container_protocol           = var.task_container_protocol
   task_definition_memory            = var.task_definition_memory
   task_definition_cpu               = var.task_definition_cpu
   task_container_environment        = var.task_container_environment
