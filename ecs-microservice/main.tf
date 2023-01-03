@@ -18,7 +18,7 @@ locals {
 }
 
 module "ecs_fargate_microservice" {
-  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=4aa9eb6"
+  source                            = "github.com/nsbno/terraform-aws-ecs-fargate?ref=920886d"
   cluster_id                        = var.ecs_cluster.id
   name_prefix                       = "${var.name_prefix}-${var.service_name}"
   vpc_id                            = var.vpc.vpc_id
@@ -29,7 +29,8 @@ module "ecs_fargate_microservice" {
   task_definition_cpu               = var.task_definition_cpu
   task_container_environment        = var.task_container_environment
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
-
+  enable_execute_command            = var.enable_execute_command
+  
   health_check = {
     port                = var.health_check_port
     path                = var.health_check_path
@@ -344,7 +345,7 @@ data "aws_iam_policy_document" "delete_s3_bucket" {
 
 data "aws_iam_policy_document" "read_encryption_key" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     # TODO should not have GenerateDataKey here
     actions = [
       "kms:Decrypt",
