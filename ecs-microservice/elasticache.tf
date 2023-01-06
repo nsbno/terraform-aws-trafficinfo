@@ -26,19 +26,19 @@ resource "aws_security_group" "cache_sg" {
 
 
 resource "aws_elasticache_replication_group" "elasticache_replication_group" {
-  count                         = var.use_elasticache == true ? 1 : 0
-  automatic_failover_enabled    = var.cache_automatic_failover_enabled
-  at_rest_encryption_enabled    = true
-  transit_encryption_enabled    = true
-  replication_group_id          = "rg-${var.service_name}"
-  replication_group_description = "Replication group for ElastiCache"
-  engine                        = "redis"
-  node_type                     = var.cache_node_type
-  number_cache_clusters         = var.cache_number_cache_clusters
-  parameter_group_name          = "default.redis5.0"
-  engine_version                = "5.0.5"
-  port                          = 6379
-  subnet_group_name             = aws_elasticache_subnet_group.elasticache_subnet_group[0].name
+  count                      = var.use_elasticache == true ? 1 : 0
+  automatic_failover_enabled = var.cache_automatic_failover_enabled
+  at_rest_encryption_enabled = true
+  transit_encryption_enabled = true
+  replication_group_id       = "rg-${var.service_name}"
+  description                = "Replication group for ElastiCache"
+  engine                     = "redis"
+  node_type                  = var.cache_node_type
+  number_cache_clusters      = var.cache_number_cache_clusters
+  parameter_group_name       = "default.redis5.0"
+  engine_version             = "5.0.5"
+  port                       = 6379
+  subnet_group_name          = aws_elasticache_subnet_group.elasticache_subnet_group[0].name
   security_group_ids = [
   aws_security_group.cache_sg[0].id]
 }
