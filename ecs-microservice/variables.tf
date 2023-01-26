@@ -210,6 +210,7 @@ variable "create_resource_server" {
 
 variable "cognito_resource_server_identifier_base" {
   description = "The base identifier used by resource servers created by esc-microservice module."
+  default     = ""
 }
 
 variable "resource_server_scopes" {
