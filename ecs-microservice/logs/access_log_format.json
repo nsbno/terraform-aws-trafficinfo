@@ -1,15 +1,1 @@
-{
-  "resourcePath": "$context.resourcePath",
-  "path": "$context.path",
-  "httpMethod": "$context.httpMethod",
-  "status": "$context.status",
-  "requestId": "$context.requestId",
-  "ip": "$context.identity.sourceIp",
-  "caller": "$context.identity.caller",
-  "user": "$context.identity.user",
-  "requestTime": "$context.requestTime",
-  "protocol": "$context.protocol",
-  "responseLength": "$context.responseLength",
-  "responseLatency": "$context.responseLatency",
-  "integrationLatency": "$context.integrationLatency"
-}
+{"resourcePath": "$context.resourcePath", "path": "$context.path", "httpMethod": "$context.httpMethod", "status": "$context.status", "requestId": "$context.requestId", "ip": "$context.identity.sourceIp", "caller": "$context.identity.caller", "user": "$context.identity.user", "requestTime": "$context.requestTime", "protocol": "$context.protocol", "responseLength": "$context.responseLength", "responseLatency": "$context.responseLatency", "integrationLatency": "$context.integrationLatency"}
