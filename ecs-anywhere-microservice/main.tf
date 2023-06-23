@@ -18,6 +18,7 @@ module "agent" {
   task_port_mappings           = var.task_port_mappings
   task_cpu                     = var.task_cpu
   task_memory                  = var.task_memory
+  desired_count                = var.desired_count
 
   deployment_maximum_percent         = var.deployment_maximum_percent
   deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent
@@ -31,8 +32,8 @@ module "agent" {
 
 # lambda user to forward logs to ElasticCloud.
 data "aws_lambda_alias" "log_to_elasticsearch_alias" {
-  name             = var.name_prefix
-  function_name    = "${var.name_prefix}-${var.elasticcloud_function_name}"
+  name          = var.name_prefix
+  function_name = "${var.name_prefix}-${var.elasticcloud_function_name}"
 }
 
 ###############################################################
@@ -40,11 +41,11 @@ data "aws_lambda_alias" "log_to_elasticsearch_alias" {
 # different kinds of resource in AWS, for example SQS and SNS.
 ###############################################################
 module "agent_task_role_attachments" {
-  source            = "../ecs-anywhere-task-role-attachments"
-  name_prefix       = "${var.name_prefix}-${var.application_name}"
-  task_role_name    = module.agent.task_role
+  source         = "../ecs-anywhere-task-role-attachments"
+  name_prefix    = "${var.name_prefix}-${var.application_name}"
+  task_role_name = module.agent.task_role
 
-  allowed_decrypt_kms_arns  = var.allowed_decrypt_kms_arns
+  allowed_decrypt_kms_arns = var.allowed_decrypt_kms_arns
   allowed_publish_sns_arns = var.allowed_publish_sns_arns
 
   # Allow agent to read from parameter store
@@ -58,7 +59,7 @@ module "agent_task_role_attachments" {
 
 data "aws_iam_policy_document" "metrics_for_on_prem_agent" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "cloudwatch:PutMetricData",
     ]
