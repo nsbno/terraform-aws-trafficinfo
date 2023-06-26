@@ -261,6 +261,16 @@ variable "cache_number_cache_clusters" {
   default     = 1
 }
 
+variable "redis_engine_version" {
+  description = "What elasticache engine version to use."
+  default = "5.0.5"
+}
+
+variable "redis_parameter_group_name" {
+  default = "default.redis5.0"
+  description = "What parameter group name to use for Redis instance."
+}
+
 variable "service_alarm_cpu_evaluation_periods" {
   description = "number of evaluation periods before triggering alarm"
   default     = 5
